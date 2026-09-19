@@ -147,9 +147,17 @@ static CFRunLoopSourceRef runLoopSource;
 #pragma mark -AutoUpdate feature
 
 +(void)checkNewVersion:(NSWindow*)parent callbackFunc:(CheckNewVersionCallback) callback {
-    //load new version config
-    NSURLSession *aSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[aSession dataTaskWithURL:[NSURL URLWithString:@"https://raw.githubusercontent.com/tuyennq1001/gox/master/version.json"] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    //load new version config without disk cache
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    config.requestCachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+    NSURLSession *aSession = [NSURLSession sessionWithConfiguration:config];
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://raw.githubusercontent.com/tuyennq1001/gox/master/version.json?t=%ld", (long)[[NSDate date] timeIntervalSince1970]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                                       timeoutInterval:15.0];
+    
+    [[aSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (((NSHTTPURLResponse *)response).statusCode == 200) {
             if (data) {
                 if(NSClassFromString(@"NSJSONSerialization")) {
@@ -216,25 +224,7 @@ static CFRunLoopSourceRef runLoopSource;
 }
 
 +(void)launchUpdateHelper {
-    //check update app has exist or not
-    NSError *copyError = nil;
-    NSString* target = [NSString stringWithFormat:@"%@/GoxUpdate.app", [self getApplicationSupportFolder]];
-    [[NSFileManager defaultManager] removeItemAtPath:target error:&copyError];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:target]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[self getApplicationSupportFolder] withIntermediateDirectories:YES attributes:nil error:nil];
-        
-        if (![[NSFileManager defaultManager] copyItemAtPath:[self getUpdateBundlePath] toPath:target error:&copyError]) {
-            NSLog(@"Error on copy");
-        }
-    }
-    
-    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-    NSURL *url = [NSURL fileURLWithPath:[workspace fullPathForApplication:target]];
-    NSError *error = nil;
-    NSArray *arguments = [NSArray arrayWithObjects: @"yeah", nil];
-    [workspace launchApplicationAtURL:url options:0 configuration:[NSDictionary dictionaryWithObject:arguments forKey:NSWorkspaceLaunchConfigurationArguments] error:&error];
-    
-    [NSApp terminate:0]; //exit main app
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/tuyennq1001/gox/releases/latest"]];
 }
 
 +(NSString*)getApplicationSupportFolder {
