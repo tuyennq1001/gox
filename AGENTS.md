@@ -124,7 +124,7 @@ Khi giải quyết bất kỳ lỗi hoặc phát triển tính năng nào, bắt
 ---
 
 ## 6. Quy tắc Build & Đóng gói macOS (Build & Packaging Rules)
-- **Lệnh build chuẩn**: Sử dụng `xcodebuild` với scheme `Gox` trong `Sources/OpenKey/macOS/OpenKey.xcodeproj`.
+- **Lệnh build chuẩn**: Sử dụng `xcodebuild` với scheme `Gox` trong `Sources/OpenKey/macOS/Gox.xcodeproj`.
 - **Hỗ trợ Apple Silicon & Intel**: Đảm bảo source code biên dịch sạch trên kiến trúc `arm64` (Apple Silicon) và `x86_64` (Intel).
 - **Giữ kho mã nguồn sạch**: Không commit các thư mục build tạm (`build/`, `DerivedData/`, file `.DS_Store`).
 

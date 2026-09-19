@@ -1,4 +1,8 @@
-# Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS
+<p align="center">
+  <img src="assets/logo.jpg" alt="Gox Logo" width="128" style="border-radius: 26px;" />
+</p>
+
+<h1 align="center">Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS</h1>
 
 <p align="center">
   <a href="https://github.com/tuyennq1001/gox/releases/latest">

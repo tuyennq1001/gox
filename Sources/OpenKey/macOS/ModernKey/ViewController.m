@@ -108,7 +108,7 @@ extern void updateInputSourceState(void);
 
 - (void)viewDidAppear {
     [super viewDidAppear];
-    NSString* str = @"OpenKey %@ - Bộ gõ Tiếng Việt";
+    NSString* str = @"Gox %@ - Bộ gõ Tiếng Việt";
     self.view.window.title = [NSString stringWithFormat:str, [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"]];
 }
 
