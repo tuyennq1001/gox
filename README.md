@@ -18,7 +18,7 @@
 ### Điểm nổi bật:
 * 🚀 **Siêu nhẹ & Hiệu năng cao**: Hot-path xử lý phím bấm được tối ưu triệt để, không gây lag con trỏ hay đơ bàn phím.
 * 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi dữ liệu ra ngoài.
-* 🌐 **Hòa hợp tuyệt đối với CJK**: Tự động bypass khi chuyển qua bộ gõ tiếng Nhật, tiếng Hàn hoặc tiếng Trung.
+* 🇯🇵 **Dùng song song bộ gõ Tiếng Nhật (không cần tắt)**: Thoải mái gõ tiếng Nhật (Kotoeri, Google Japanese Input...) song song với tiếng Việt. Gox tự động nhận diện và bypass phím bấm nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji/Hiragana/Kanji.
 * 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt/Tiếng Anh theo từng ứng dụng (Safari ↔ Terminal).
 * 🎯 **Khắc phục lỗi gõ trên Browser**: Tích hợp cơ chế sửa lỗi đúp từ trên Omnibox trình duyệt Chromium và Safari.
 
@@ -39,6 +39,7 @@
 ---
 
 ## Các tính năng chính
+- **Gõ song song Tiếng Nhật không cần tắt (CJK Coexistence):** Thoải mái để Gox chạy thường trực 24/7. Khi bạn chuyển sang bộ gõ tiếng Nhật (`Japanese`, `Kotoeri`, `GoogleJapaneseInput`...), Gox tự động lắng nghe sự kiện hệ thống và nhả phím nguyên bản (bypass), không can thiệp và không gửi phím Backspace giả lập làm vỡ bộ đệm tổ hợp inline text (Romaji ➔ Hiragana/Kanji).
 - **Chuyển chế độ thông minh:** Tự động đổi Tiếng Việt/Tiếng Anh tương ứng với từng ứng dụng đang kích hoạt.
 - **Tự ghi nhớ bảng mã:** Ghi nhớ bảng mã riêng biệt cho từng phần mềm (Photoshop, AutoCAD, IDE...).
 - **Macro (Gõ tắt):** Hỗ trợ danh sách gõ tắt không giới hạn độ dài ký tự.
@@ -62,6 +63,10 @@
 
 > [!TIP]
 > Hãy tắt hẳn bộ gõ tiếng Việt mặc định của macOS để tránh xung đột phím bấm.
+
+> [!NOTE]
+> **Dành cho người dùng tiếng Nhật (Japanese IME)**:
+> Bạn có thể chuyển qua lại giữa Tiếng Nhật và Tiếng Việt bằng phím tắt hệ thống macOS thông thường (`Control + Space` hoặc phím `Globe/Fn`). Gox tự động phát hiện và bypass hoàn toàn, không cần phải tắt Gox hay chuyển về Tiếng Anh thủ công.
 
 ---
 
