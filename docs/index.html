@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS</title>
+  <meta name="description" content="Gox là bộ gõ tiếng Việt mã nguồn mở thế hệ mới cho macOS. Tối giản, siêu nhẹ, zero telemetry, tương thích hoàn hảo với chip Apple Silicon và Intel.">
+  <meta name="keywords" content="Gox, bo go tieng viet, macos, openkey, telex, vni, apple silicon, go tieng viet mac">
+  <meta property="og:title" content="Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS">
+  <meta property="og:description" content="Tối giản, siêu nhẹ, zero-telemetry và hoạt động song song mượt mà với bộ gõ tiếng Nhật mà không cần tắt.">
+  <meta property="og:image" content="assets/logo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', '"Segoe UI"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* macOS frosted glass style */
+    .glass {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glow {
+      box-shadow: 0 0 50px -10px rgba(99, 102, 241, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0B0F19] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-50 glass bg-white/80 dark:bg-[#0B0F19]/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <img src="assets/logo.png" alt="Gox Logo" class="w-9 h-9 rounded-xl shadow-sm group-hover:scale-105 transition-transform">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-xl tracking-tight">Gox</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950/70 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">macOS</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="#tinh-nang" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Tính năng</a>
+        <a href="#cai-dat" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Cài đặt</a>
+        <a href="#bang-ma" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Kiểu gõ & Bảng mã</a>
+        <a href="#faq" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Hỏi đáp</a>
+      </nav>
+
+      <!-- Action items -->
+      <div class="flex items-center gap-3">
+        <!-- Theme toggle -->
+        <button id="theme-toggle" type="button" aria-label="Đổi giao diện sáng tối" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+          <svg id="theme-icon-dark" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="theme-icon-light" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+
+        <!-- GitHub link -->
+        <a href="https://github.com/tuyennq1001/gox" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Mã nguồn GitHub">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </a>
+
+        <!-- Download CTA -->
+        <a href="https://github.com/tuyennq1001/gox/releases/latest" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm shadow-indigo-600/30 transition-all hover:shadow-indigo-600/50">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Tải bản mới nhất</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
+    <!-- Subtle Background Glows -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-indigo-500/15 dark:bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+    <div class="absolute top-1/3 left-1/3 w-[300px] h-[250px] bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-[80px] pointer-events-none -z-10"></div>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/80 text-xs font-semibold text-slate-700 dark:text-slate-300 mb-6">
+        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Hỗ trợ macOS Sequoia & Apple Silicon Native (M1 – M4)</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] mb-6">
+        Bộ gõ Tiếng Việt thế hệ mới<br>
+        <span class="gradient-text">tối giản & mượt mà cho macOS</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="max-w-2xl mx-auto text-lg sm:text-xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed">
+        Thiết kế tinh gọn, siêu nhẹ, <strong>Zero Telemetry</strong>. Hoạt động trơn tru trong Xcode, VS Code, Terminal và dùng song song bộ gõ Tiếng Nhật mà <strong>không cần tắt</strong>.
+      </p>
+
+      <!-- Call To Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <a href="https://github.com/tuyennq1001/gox/releases/latest" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-7 py-3.5 rounded-2xl font-semibold text-base bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/25 transition-all hover:scale-[1.02] active:scale-[0.98]">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.09 1.73-.95 2.76 1 .08 2.05-.51 2.68-1.26z"/>
+          </svg>
+          <span>Tải xuống cho macOS (.dmg)</span>
+        </a>
+
+        <a href="https://github.com/tuyennq1001/gox" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-semibold text-base bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 shadow-sm transition-all hover:scale-[1.02]">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          <span>Xem trên GitHub</span>
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 dark:text-slate-400">
+        <span class="inline-flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Mã nguồn mở GPLv3 & Miễn phí
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Không gây lag chuột hay trễ phím
+        </span>
+        <span class="inline-flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          100% Offline, Zero-Telemetry
+        </span>
+      </div>
+
+      <!-- Preview Mockup Card -->
+      <div class="mt-14 max-w-3xl mx-auto rounded-3xl p-1 bg-gradient-to-b from-indigo-500/20 via-slate-200/50 to-transparent dark:from-indigo-500/30 dark:via-slate-800/50 glow">
+        <div class="rounded-[22px] bg-white dark:bg-[#111625] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden text-left">
+          <!-- macOS Window Titlebar -->
+          <div class="h-10 px-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+            </div>
+            <div class="text-xs font-medium text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+              <img src="assets/logo.png" alt="Gox" class="w-3.5 h-3.5">
+              <span>Gox Control Panel — macOS Status</span>
+            </div>
+            <div class="w-12"></div>
+          </div>
+
+          <!-- Mockup Content -->
+          <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left: Typing experience -->
+            <div class="space-y-4">
+              <div class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">Trải nghiệm gõ phím</div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 space-y-2">
+                <div class="text-xs text-slate-400">Thanh địa chỉ Chrome / Safari (Omnibox):</div>
+                <div class="text-sm font-mono flex items-center gap-1 text-slate-700 dark:text-slate-200">
+                  <span class="text-emerald-500">✓</span> https://google.com/search?q=cộng đồng macbook<span class="inline-block w-1.5 h-4 bg-indigo-500 animate-pulse ml-0.5"></span>
+                </div>
+                <div class="text-[11px] text-emerald-600 dark:text-emerald-400">Triệt tiêu hoàn toàn lỗi gạch chân & đúp từ!</div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 space-y-2">
+                <div class="text-xs text-slate-400">Chuyển sang bộ gõ Tiếng Nhật (CJK Coexistence):</div>
+                <div class="text-sm font-mono flex items-center gap-1 text-slate-700 dark:text-slate-200">
+                  <span>日本語を入力中：</span><span class="bg-indigo-100 dark:bg-indigo-950 px-1 rounded text-indigo-600 dark:text-indigo-300">とうきょう</span> ➔ 東京
+                </div>
+                <div class="text-[11px] text-slate-500">Gox tự động bypass nguyên bản, không phá vỡ cụm Romaji inline.</div>
+              </div>
+            </div>
+
+            <!-- Right: Quick status indicators -->
+            <div class="space-y-3">
+              <div class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">Menu Bar & Cấu hình nhanh</div>
+              
+              <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                  <span class="text-xs font-medium">Kiểu gõ hiện tại</span>
+                </div>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300">Telex</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span class="text-xs font-medium">Bảng mã</span>
+                </div>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300">Unicode dựng sẵn</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                  <span class="text-xs font-medium">Phím chuyển E / V</span>
+                </div>
+                <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Ctrl + Space</span>
+              </div>
+
+              <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <span class="text-xs font-medium">Nhớ chế độ theo ứng dụng</span>
+                </div>
+                <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Đang kích hoạt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Features Section -->
+  <section id="tinh-nang" class="py-20 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3">Ưu điểm vượt trội</h2>
+        <p class="text-3xl sm:text-4xl font-extrabold tracking-tight">Giải quyết triệt để những bất tiện khi gõ tiếng Việt trên Mac</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Feature 1 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/50 dark:border-indigo-800/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-5">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Siêu nhẹ & Tốc độ tức thì</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Hot-path xử lý phím được viết bằng C++ tối ưu ở tầng hệ thống (<code class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">CGEventTap</code>), không cấp phát bộ nhớ động rườm rà, loại bỏ hiện tượng đơ chuột hay trễ phím.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/50 dark:border-emerald-800/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-5">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Zero Telemetry (100% Offline)</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Mật khẩu, thông tin cá nhân và dữ liệu gõ phím của bạn được bảo đảm an toàn 100%. Gox không thu thập, không ghi log và tuyệt đối không gửi bất kỳ gói tin nào qua Internet.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200/50 dark:border-rose-800/50 flex items-center justify-center text-rose-600 dark:text-rose-400 mb-5">
+            <span class="font-bold text-lg">あ</span>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Gõ song song Tiếng Nhật</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Tự động nhận diện khi chuyển sang bộ gõ tiếng Nhật (Kotoeri, Google Japanese Input...) và bypass phím bấm nguyên bản. Không cần tắt bật Gox thủ công, không làm hỏng bộ đệm Romaji.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200/50 dark:border-purple-800/50 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-5">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Ghi nhớ chế độ từng App</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Gox tự động nhớ chế độ E/V cho từng phần mềm riêng biệt: giữ Tiếng Anh khi gõ lệnh trong Terminal/VS Code, và tự chuyển Tiếng Việt khi quay lại Safari, Telegram hoặc Slack.
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200/50 dark:border-blue-800/50 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-5">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Sửa lỗi Trình duyệt & Gạch chân</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Tích hợp cơ chế triệt tiêu hiện tượng đúp chữ khó chịu khi gõ tìm kiếm trên thanh URL (Omnibox) của Google Chrome, Safari, Microsoft Edge và loại bỏ hoàn toàn lỗi gạch chân chữ.
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200/50 dark:border-amber-800/50 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-5">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Đầy đủ Kiểu gõ & Bảng mã</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Hỗ trợ chuẩn xác các kiểu gõ Telex, Simple Telex, VNI và các bảng mã phổ biến: Unicode dựng sẵn, Unicode tổ hợp, TCVN3 (ABC), VNI Windows, Vietnamese Locale CP 1258.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported Encodings & Input Methods -->
+  <section id="bang-ma" class="py-20 border-t border-slate-200/80 dark:border-slate-800/80">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3">Chuẩn hóa & Tương thích</h2>
+        <p class="text-3xl font-extrabold tracking-tight">Hỗ trợ đầy đủ các kiểu gõ và bảng mã Tiếng Việt</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Input methods -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-bold">⌨️</span>
+            <h3 class="text-xl font-bold">Kiểu gõ hỗ trợ</h3>
+          </div>
+          <ul class="space-y-3.5 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">Telex:</strong> Kiểu gõ phổ biến nhất với các phím s, f, r, x, j, w, aa, ee, oo.
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">Simple Telex 1 & 2:</strong> Kiểu gõ Telex tinh giản, linh hoạt cho người gõ tốc độ cao.
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">VNI:</strong> Kiểu gõ số truyền thống (1, 2, 3, 4, 5, 6, 7, 8, 9, 0).
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">Macro (Gõ tắt):</strong> Tự do định nghĩa danh sách phím tắt không giới hạn ký tự.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Encodings -->
+        <div class="p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold">🔤</span>
+            <h3 class="text-xl font-bold">Bảng mã hỗ trợ</h3>
+          </div>
+          <ul class="space-y-3.5 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">Unicode dựng sẵn:</strong> Chuẩn mã hóa phổ biến nhất hiện nay trên Internet & macOS.
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">Unicode tổ hợp:</strong> Tương thích tốt với một số phần mềm đồ họa cổ điển.
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">TCVN3 (ABC):</strong> Bảng mã miền Bắc (font .VnTime, .VnArial...).
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-emerald-500 font-bold">✓</span>
+              <div>
+                <strong class="font-semibold">VNI Windows & CP 1258:</strong> Tương thích trọn vẹn văn bản tài liệu cũ từ Windows.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Steps -->
+  <section id="cai-dat" class="py-20 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3">Cài đặt dễ dàng</h2>
+        <p class="text-3xl font-extrabold tracking-tight">Chỉ 3 bước để bắt đầu sử dụng Gox</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="relative p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-extrabold text-xl flex items-center justify-center mx-auto mb-5 shadow-md shadow-indigo-600/30">
+            1
+          </div>
+          <h3 class="text-lg font-bold mb-2">Tải file .dmg</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+            Tải phiên bản mới nhất tương thích cả chip Apple Silicon (M1/M2/M3/M4) và Intel.
+          </p>
+          <a href="https://github.com/tuyennq1001/gox/releases/latest" class="inline-flex items-center text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+            Đến trang GitHub Releases ➔
+          </a>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-extrabold text-xl flex items-center justify-center mx-auto mb-5 shadow-md shadow-indigo-600/30">
+            2
+          </div>
+          <h3 class="text-lg font-bold mb-2">Kéo vào Applications</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Mở file `.dmg` vừa tải về, kéo biểu tượng Gox vào thư mục <strong>Applications</strong> để hoàn tất sao chép.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative p-7 rounded-3xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 text-center">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-extrabold text-xl flex items-center justify-center mx-auto mb-5 shadow-md shadow-indigo-600/30">
+            3
+          </div>
+          <h3 class="text-lg font-bold mb-2">Cấp quyền Trợ năng</h3>
+          <p class="text-sm text-slate-600 dark:text-slate-300 mb-4">
+            Mở Gox lần đầu, hệ thống sẽ tự mở <em>System Settings ➔ Privacy & Security ➔ Accessibility</em>. Hãy gạt bật Gox.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 border-t border-slate-200/80 dark:border-slate-800/80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-3">Giải đáp thắc mắc</h2>
+        <p class="text-3xl font-extrabold tracking-tight">Câu hỏi thường gặp</p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Q1 -->
+        <details class="group p-6 rounded-2xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-semibold text-base sm:text-lg">
+            <span>Gox có an toàn và bảo mật thông tin phím gõ không?</span>
+            <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Tuyệt đối an toàn. Gox là phần mềm mã nguồn mở 100% theo giấy phép GPLv3 và tuân thủ nguyên tắc <strong>Zero Telemetry</strong>. Gox hoạt động hoàn toàn offline, không kết nối internet ngoài luồng, không thu thập mật khẩu hay bất kỳ thông tin phím bấm nào của người dùng. Mọi người đều có thể đọc và tự biên dịch mã nguồn trên GitHub.
+          </p>
+        </details>
+
+        <!-- Q2 -->
+        <details class="group p-6 rounded-2xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-semibold text-base sm:text-lg">
+            <span>Tại sao Gox cần quyền Trợ năng (Accessibility)?</span>
+            <summary class="hidden"></summary>
+            <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Trên macOS, các phần mềm bộ gõ độc lập bắt buộc phải có quyền Trợ năng để lắng nghe sự kiện phím bấm (<code class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded">CGEventTap</code>) và chuyển hóa các ký tự gõ phím thành tiếng Việt có dấu. Nếu không có quyền này, hệ điều hành macOS sẽ chặn bộ gõ nhận diện phím.
+          </p>
+        </details>
+
+        <!-- Q3 -->
+        <details class="group p-6 rounded-2xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-semibold text-base sm:text-lg">
+            <span>Tính năng gõ song song Tiếng Nhật (CJK Coexistence) hoạt động ra sao?</span>
+            <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Khi bạn chuyển sang bộ gõ tiếng Nhật của hệ thống (ví dụ: Japanese Romaji, Kotoeri, Google Japanese Input), Gox tự động lắng nghe notification từ hệ điều hành và nhả phím nguyên bản (bypass). Gox sẽ không gửi phím Backspace can thiệp, giúp bạn gõ Romaji và chuyển đổi Kanji trơn tru mà không cần phải nhấn tắt Gox mỗi khi cần gõ tiếng Nhật.
+          </p>
+        </details>
+
+        <!-- Q4 -->
+        <details class="group p-6 rounded-2xl bg-white dark:bg-[#111625] border border-slate-200/80 dark:border-slate-800/80 [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between cursor-pointer font-semibold text-base sm:text-lg">
+            <span>Gox có hỗ trợ máy Mac chạy chip M1, M2, M3, M4 không?</span>
+            <span class="ml-4 flex-shrink-0 text-slate-400 group-open:rotate-180 transition-transform">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </span>
+          </summary>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Có! Gox được build dưới dạng <strong>Universal Binary</strong>, hỗ trợ native 100% cho cả kiến trúc Apple Silicon (arm64) lẫn Intel (x86_64). Ứng dụng chạy trực tiếp không cần qua lớp giả lập Rosetta 2, tiết kiệm pin tối đa.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="rounded-3xl p-8 sm:p-12 bg-gradient-to-r from-indigo-600 to-indigo-800 text-white text-center shadow-xl shadow-indigo-600/20">
+        <h2 class="text-2xl sm:text-3xl font-extrabold mb-4">Sẵn sàng trải nghiệm gõ phím mượt mà hơn trên Mac?</h2>
+        <p class="text-indigo-100 max-w-xl mx-auto mb-8 text-sm sm:text-base">
+          Gox hoàn toàn miễn phí, mã nguồn mở và được phát triển bởi cộng đồng. Hãy tải về và cảm nhận tốc độ ngay hôm nay!
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="https://github.com/tuyennq1001/gox/releases/latest" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl font-bold bg-white text-indigo-700 hover:bg-indigo-50 shadow-md transition-all hover:scale-105">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.09 1.73-.95 2.76 1 .08 2.05-.51 2.68-1.26z"/>
+            </svg>
+            <span>Tải ngay cho macOS</span>
+          </a>
+          <a href="https://github.com/tuyennq1001/gox" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold bg-indigo-700/80 hover:bg-indigo-700 text-white border border-indigo-500/50 transition-all">
+            ⭐ Tặng sao trên GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 py-10 text-center text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-5xl mx-auto px-4 space-y-3">
+      <div class="flex items-center justify-center gap-2 font-medium">
+        <img src="assets/logo.png" alt="Gox" class="w-5 h-5 rounded">
+        <span>Gox — Next-Gen Vietnamese Input Method for macOS</span>
+      </div>
+      <p>
+        Phát triển bởi <a href="https://github.com/tuyennq1001" target="_blank" rel="noopener noreferrer" class="font-semibold text-slate-700 dark:text-slate-200 hover:underline">tuyennq1001</a>. Phát hành theo giấy phép mã nguồn mở <a href="https://github.com/tuyennq1001/gox/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" class="hover:underline text-indigo-600 dark:text-indigo-400">GNU General Public License v3.0</a>.
+      </p>
+      <div class="flex items-center justify-center gap-4 pt-2">
+        <a href="https://github.com/tuyennq1001/gox" class="hover:underline">GitHub</a>
+        <span>•</span>
+        <a href="https://github.com/tuyennq1001/gox/releases" class="hover:underline">Phiên bản</a>
+        <span>•</span>
+        <a href="https://github.com/tuyennq1001/gox/issues" class="hover:underline">Báo lỗi & Góp ý</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle & Interactions Script -->
+  <script>
+    (function () {
+      const themeToggle = document.getElementById('theme-toggle');
+      const darkIcon = document.getElementById('theme-icon-dark');
+      const lightIcon = document.getElementById('theme-icon-light');
+
+      // Check saved theme or system preference
+      const isDark = localStorage.theme === 'dark' || 
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      function updateTheme(dark) {
+        if (dark) {
+          document.documentElement.classList.add('dark');
+          darkIcon.classList.add('hidden');
+          lightIcon.classList.remove('hidden');
+        } else {
+          document.documentElement.classList.remove('dark');
+          lightIcon.classList.add('hidden');
+          darkIcon.classList.remove('hidden');
+        }
+      }
+
+      updateTheme(isDark);
+
+      themeToggle.addEventListener('click', function () {
+        const currentlyDark = document.documentElement.classList.contains('dark');
+        const nextDark = !currentlyDark;
+        localStorage.theme = nextDark ? 'dark' : 'light';
+        updateTheme(nextDark);
+      });
+    })();
+  </script>
+</body>
+</html>
