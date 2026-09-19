@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.jpg" alt="Gox Logo" width="128" style="border-radius: 26px;" />
+  <img src="assets/logo.png" alt="Gox Logo" width="130" />
 </p>
 
 <h1 align="center">Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS</h1>
