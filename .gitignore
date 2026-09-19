@@ -13,3 +13,4 @@
 build/
 DerivedData/
 *.DS_Store
+*.dmg

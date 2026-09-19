@@ -124,7 +124,7 @@ extern bool convertToolDontAlertWhenCompleted;
                 if (!vShowIconOnDock) {
                     [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
                 }
-                [self setupOpenKey];
+                [self setupGox];
             });
         }
     }];
@@ -141,7 +141,7 @@ extern bool convertToolDontAlertWhenCompleted;
         if (!vShowIconOnDock) {
             [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
         }
-        [self setupOpenKey];
+        [self setupGox];
         return;
     }
     
@@ -153,7 +153,7 @@ extern bool convertToolDontAlertWhenCompleted;
     }
 }
 
-- (void)setupOpenKey {
+- (void)setupGox {
     NSLog(@"[Gox] Accessibility is enabled! Proceeding to setup.");
     
     vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
@@ -242,7 +242,7 @@ extern bool convertToolDontAlertWhenCompleted;
         return;
     }
     
-    [self setupOpenKey];
+    [self setupGox];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
@@ -558,7 +558,7 @@ extern bool convertToolDontAlertWhenCompleted;
 
 -(void) onControlPanelSelected {
     if (_mainWC == nil) {
-        _mainWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"OpenKey"];
+        _mainWC = [[NSStoryboard storyboardWithName:@"Main" bundle:nil] instantiateControllerWithIdentifier:@"Gox"];
     }
     //[OpenKeyManager showDockIcon:YES];
     if ([_mainWC.window isVisible]) {
