@@ -38,6 +38,7 @@ extern int vShowIconOnDock;
 extern int vAutoCapsMacro;
 extern int vFixChromiumBrowser;
 extern int vPerformLayoutCompat;
+extern void updateInputSourceState(void);
 
 @implementation ViewController {
     __weak IBOutlet NSButton *CustomSwitchCommand;
@@ -349,6 +350,7 @@ extern int vPerformLayoutCompat;
     
     NSInteger val = [self setCustomValue:sender keyToSet:@"vOtherLanguage"];
     vOtherLanguage = (int)val;
+    updateInputSourceState();
 }
 
 
@@ -457,7 +459,11 @@ extern int vPerformLayoutCompat;
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vRememberCode"];
     self.RememberTableCode.state = value ? NSControlStateValueOn : NSControlStateValueOff;
     
-    value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vOtherLanguage"];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"vOtherLanguage"] == nil) {
+        value = 1;
+    } else {
+        value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vOtherLanguage"];
+    }
     self.OtherLanguage.state = value ? NSControlStateValueOn : NSControlStateValueOff;
     
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vTempOffOpenKey"];

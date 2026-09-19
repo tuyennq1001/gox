@@ -23,6 +23,8 @@ extern void OnTableCodeChange(void);
 extern void OnInputMethodChanged(void);
 extern void RequestNewSession(void);
 extern void OnActiveAppChanged(void);
+extern void updateInputSourceState(void);
+extern volatile BOOL isNonLatinInputActive;
 
 //see document in Engine.h
 int vLanguage = 1;
@@ -92,64 +94,67 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void)askPermission {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText: [NSString stringWithFormat:@"OpenKey cần bạn cấp quyền để có thể hoạt động!"]];
-    [alert setInformativeText:@"Vui lòng chạy lại ứng dụng sau khi cấp quyền."];
-
-    [alert addButtonWithTitle:@"Không"];
-    [alert addButtonWithTitle:@"Cấp quyền"];
-
-    [alert.window makeKeyAndOrderFront:nil];
-    [alert.window setLevel:NSStatusWindowLevel];
-
-    NSModalResponse res = [alert runModal];
-
-    if (res == 1001) {
-        MJAccessibilityOpenPanel();
-    }
-
-    [NSApp terminate:0];
+    [self waitForAccessibilityPermission];
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    appDelegate = self;
+-(void)waitForAccessibilityPermission {
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+    [NSApp activateIgnoringOtherApps:YES];
     
-    [self registerSupportedNotification];
+    MJAccessibilityOpenPanel();
     
-    //set quick tooltip
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInt: 50]
-                                              forKey: @"NSInitialToolTipDelay"];
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"OpenKey cần quyền Trợ năng (Accessibility)"];
+    [alert setInformativeText:@"1. Bật công tắc của OpenKey trong Cài đặt hệ thống > Trợ năng (Accessibility).\n2. Nếu đã có OpenKey trong danh sách, hãy gạt tắt rồi bật lại (hoặc bấm dấu '-' xoá đi và thêm lại).\n\nỨng dụng sẽ tự động kích hoạt ngay sau khi bạn cấp quyền!"];
+    [alert addButtonWithTitle:@"Mở Cài đặt Trợ năng"];
+    [alert addButtonWithTitle:@"Thoát"];
     
-    //check whether this app has been launched before that or not
-    //Only check instances owned by current user (for multi-user/Fast User Switching support)
-    uid_t currentUID = getuid();
-    NSArray<NSRunningApplication *>* runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
-    pid_t myPID = [[NSProcessInfo processInfo] processIdentifier];
-    BOOL alreadyRunning = NO;
-
-    for (NSRunningApplication *app in runningApps) {
-        if ([app.bundleIdentifier isEqualToString:OPENKEY_BUNDLE] &&
-            app.processIdentifier != myPID) {
-            pid_t pid = app.processIdentifier;
-            struct proc_bsdinfo proc;
-            int size = proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &proc, sizeof(proc));
-            if (size == sizeof(proc) && proc.pbi_uid == currentUID) {
-                alreadyRunning = YES;
-                break;
-            }
+    [alert.window makeKeyAndOrderFront:nil];
+    [alert.window setLevel:NSStatusWindowLevel];
+    
+    __block NSTimer *timer = nil;
+    timer = [NSTimer timerWithTimeInterval:0.8 repeats:YES block:^(NSTimer * _Nonnull t) {
+        if (MJAccessibilityIsEnabled()) {
+            [t invalidate];
+            timer = nil;
+            NSLog(@"[OpenKey] Accessibility permission granted dynamically!");
+            [NSApp abortModal];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
+                if (!vShowIconOnDock) {
+                    [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+                }
+                [self setupOpenKey];
+            });
         }
+    }];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    NSModalResponse res = [alert runModal];
+    if (timer) {
+        [timer invalidate];
+        timer = nil;
     }
-
-    if (alreadyRunning) {
-        [NSApp terminate:nil];
+    
+    if (MJAccessibilityIsEnabled()) {
+        vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
+        if (!vShowIconOnDock) {
+            [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+        }
+        [self setupOpenKey];
         return;
     }
     
-    // check if user granted Accessabilty permission
-    if (!MJAccessibilityIsEnabled()) {
-        [self askPermission];
-        return;
+    if (res == NSAlertFirstButtonReturn) {
+        MJAccessibilityOpenPanel();
+        [self waitForAccessibilityPermission];
+    } else {
+        [NSApp terminate:0];
     }
+}
+
+- (void)setupOpenKey {
+    NSLog(@"[OpenKey] Accessibility is enabled! Proceeding to setup.");
     
     vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
     if (vShowIconOnDock)
@@ -187,6 +192,57 @@ extern bool convertToolDontAlertWhenCompleted;
     //correct run on startup
     NSInteger val = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
     [appDelegate setRunOnStartup:val];
+    
+    //initialize input source state
+    updateInputSourceState();
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    NSLog(@"[OpenKey] Launching, myPID=%d", [[NSProcessInfo processInfo] processIdentifier]);
+    appDelegate = self;
+    
+    [self registerSupportedNotification];
+    
+    //set quick tooltip
+    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInt: 50]
+                                              forKey: @"NSInitialToolTipDelay"];
+    
+    //check whether this app has been launched before that or not
+    //Only check instances owned by current user (for multi-user/Fast User Switching support)
+    uid_t currentUID = getuid();
+    NSArray<NSRunningApplication *>* runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
+    pid_t myPID = [[NSProcessInfo processInfo] processIdentifier];
+    BOOL alreadyRunning = NO;
+
+    for (NSRunningApplication *app in runningApps) {
+        if ([app.bundleIdentifier isEqualToString:OPENKEY_BUNDLE] &&
+            app.processIdentifier != myPID &&
+            !app.isTerminated) {
+            pid_t pid = app.processIdentifier;
+            struct proc_bsdinfo proc;
+            int size = proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &proc, sizeof(proc));
+            if (size == sizeof(proc) && proc.pbi_uid == currentUID && kill(pid, 0) == 0) {
+                NSLog(@"[OpenKey] Instance already running with PID %d", pid);
+                alreadyRunning = YES;
+                break;
+            }
+        }
+    }
+
+    if (alreadyRunning) {
+        NSLog(@"[OpenKey] Terminating because already running.");
+        [NSApp terminate:nil];
+        return;
+    }
+    
+    // check if user granted Accessabilty permission
+    if (!MJAccessibilityIsEnabled()) {
+        NSLog(@"[OpenKey] Accessibility is NOT enabled, waiting for permission.");
+        [self waitForAccessibilityPermission];
+        return;
+    }
+    
+    [self setupOpenKey];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
@@ -195,7 +251,11 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    CFNotificationCenterRemoveObserver(CFNotificationCenterGetDistributedCenter(),
+                                       (__bridge const void *)(self),
+                                       kTISNotifySelectedKeyboardInputSourceChanged,
+                                       NULL);
 }
 
 -(void) createStatusBarMenu {
@@ -320,7 +380,12 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void)setRunOnStartup:(BOOL)val {
+    NSString *helperPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/Library/LoginItems/OpenKeyHelper.app"];
     CFStringRef appId = (__bridge CFStringRef)@"com.tuyenmai.OpenKeyHelper";
+    if (![[NSFileManager defaultManager] fileExistsAtPath:helperPath]) {
+        SMLoginItemSetEnabled(appId, NO);
+        return;
+    }
     SMLoginItemSetEnabled(appId, val);
 }
 
@@ -533,9 +598,18 @@ extern bool convertToolDontAlertWhenCompleted;
     [viewController fillData];
 }
 
+static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+    [(__bridge AppDelegate *)observer inputSourceChanged:nil];
+}
+
+-(void)inputSourceChanged:(NSNotification *)notification {
+    updateInputSourceState();
+}
+
 #pragma mark Reset OpenKey after mac computer awake
 -(void)receiveWakeNote: (NSNotification*)note {
     [OpenKeyManager initEventTap];
+    updateInputSourceState();
 }
 
 -(void)receiveSleepNote: (NSNotification*)note {
@@ -547,6 +621,7 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void)activeAppChanged: (NSNotification*)note {
+    updateInputSourceState();
     if (vUseSmartSwitchKey && [OpenKeyManager isInited]) {
         OnActiveAppChanged();
     }
@@ -568,5 +643,19 @@ extern bool convertToolDontAlertWhenCompleted;
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
                                                            selector: @selector(activeAppChanged:)
                                                                name: NSWorkspaceDidActivateApplicationNotification object: NULL];
+
+    // Cocoa notification for keyboard input source selection change
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(inputSourceChanged:)
+                                                 name:NSTextInputContextKeyboardSelectionDidChangeNotification
+                                               object:nil];
+
+    // Carbon distributed notification for selected keyboard input source change
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDistributedCenter(),
+                                    (__bridge const void *)(self),
+                                    onCarbonInputSourceChanged,
+                                    kTISNotifySelectedKeyboardInputSourceChanged,
+                                    NULL,
+                                    CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 @end

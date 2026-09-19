@@ -86,6 +86,10 @@ extern "C" {
     
     NSString* _frontMostApp = @"UnknownApp";
     
+    volatile BOOL isNonLatinInputActive = NO;
+    
+    void updateInputSourceState(void);
+    
     void OpenKeyInit() {
         //load saved data
         vFreeMark = 0;//(int)[[NSUserDefaults standardUserDefaults] integerForKey:@"FreeMark"];
@@ -107,7 +111,12 @@ extern "C" {
         LOAD_DATA(vQuickEndConsonant, vQuickEndConsonant);
         LOAD_DATA(vQuickStartConsonant, vQuickStartConsonant);
         LOAD_DATA(vRememberCode, vRememberCode);
-        LOAD_DATA(vOtherLanguage, vOtherLanguage);
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"vOtherLanguage"] == nil) {
+            vOtherLanguage = 1;
+            [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"vOtherLanguage"];
+        } else {
+            LOAD_DATA(vOtherLanguage, vOtherLanguage);
+        }
         LOAD_DATA(vTempOffOpenKey, vTempOffOpenKey);
         
         LOAD_DATA(vFixChromiumBrowser, vFixChromiumBrowser);
@@ -142,6 +151,7 @@ extern "C" {
         if (convertToolHotKey == 0) {
             convertToolHotKey = EMPTY_HOTKEY;
         }
+        updateInputSourceState();
     }
     
     void RequestNewSession() {
@@ -150,6 +160,58 @@ extern "C" {
         
         if (IS_DOUBLE_CODE(vCodeTable)) { //VNI
             _syncKey.clear();
+        }
+    }
+    
+    void updateInputSourceState() {
+        TISInputSourceRef currentSource = TISCopyCurrentKeyboardInputSource();
+        if (currentSource) {
+            NSString *sourceID = (__bridge NSString *)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceID);
+            CFArrayRef languages = (CFArrayRef)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceLanguages);
+            
+            BOOL isCJK = NO;
+            if (sourceID != nil) {
+                if ([sourceID containsString:@"Japanese"] ||
+                    [sourceID containsString:@"Kotoeri"] ||
+                    [sourceID containsString:@"com.google.inputmethod.Japanese"] ||
+                    [sourceID containsString:@"Korean"] ||
+                    [sourceID containsString:@"Hangul"] ||
+                    [sourceID containsString:@"SCIM"] ||
+                    [sourceID containsString:@"TCIM"] ||
+                    [sourceID containsString:@"Pinyin"] ||
+                    [sourceID containsString:@"Cangjie"] ||
+                    [sourceID containsString:@"Zhuyin"] ||
+                    [sourceID containsString:@"ATOK"]) {
+                    isCJK = YES;
+                }
+            }
+            
+            BOOL isNonEnglish = NO;
+            if (languages != NULL && CFArrayGetCount(languages) > 0) {
+                BOOL hasEnglish = NO;
+                CFIndex count = CFArrayGetCount(languages);
+                for (CFIndex i = 0; i < count; i++) {
+                    NSString *lang = (__bridge NSString *)CFArrayGetValueAtIndex(languages, i);
+                    if ([lang hasPrefix:@"ja"] || [lang hasPrefix:@"zh"] || [lang hasPrefix:@"ko"]) {
+                        isCJK = YES;
+                        break;
+                    }
+                    if ([lang hasPrefix:@"en"]) {
+                        hasEnglish = YES;
+                    }
+                }
+                if (!hasEnglish) {
+                    isNonEnglish = YES;
+                }
+            }
+            
+            BOOL shouldBypass = isCJK || (vOtherLanguage && isNonEnglish);
+            
+            if (isNonLatinInputActive != shouldBypass) {
+                isNonLatinInputActive = shouldBypass;
+                RequestNewSession();
+            }
+            CFRelease(currentSource);
         }
     }
     
@@ -604,6 +666,20 @@ extern "C" {
             return event;
         }
         
+        // Fast bypass if non-Latin / CJK is active
+        if (isNonLatinInputActive) {
+            return event;
+        }
+        
+        // On key down when starting a new sequence, verify input source state
+        // to catch any input source switch immediately
+        if (type == kCGEventKeyDown && _syncKey.empty()) {
+            updateInputSourceState();
+            if (isNonLatinInputActive) {
+                return event;
+            }
+        }
+        
         _flag = CGEventGetFlags(event);
         _keycode = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
         
@@ -690,25 +766,6 @@ extern "C" {
             return event;
         }
 
-        //if "turn off Vietnamese when in other language" mode on
-        if(vOtherLanguage){
-            TISInputSourceRef isource = TISCopyCurrentKeyboardInputSource();
-            if ( isource != NULL )
-            {
-                CFArrayRef languages = (CFArrayRef) TISGetInputSourceProperty(isource, kTISPropertyInputSourceLanguages);
-                
-                if (CFArrayGetCount(languages) > 0) {
-                    CFStringRef langRef = (CFStringRef)CFArrayGetValueAtIndex(languages, 0);
-                    NSString *currentLanguage = (__bridge NSString *)langRef;
-                    if(![currentLanguage isLike:@"en"]){
-                        return event;
-                    }
-                    CFRelease(langRef);
-                    CFRelease(isource);
-                }
-            }
-        }
-        
         //handle keyboard
         if (type == kCGEventKeyDown) {
             //send event signal to Engine

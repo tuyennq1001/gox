@@ -9,6 +9,7 @@
 //  License: MIT
 
 
+#import <AppKit/AppKit.h>
 #import "MJAccessibilityUtils.h"
 // #import "HSLogger.h"
 
@@ -35,8 +36,7 @@ void MJAccessibilityOpenPanel(void) {
     if (AXIsProcessTrustedWithOptions != NULL) {
         AXIsProcessTrustedWithOptions((__bridge CFDictionaryRef)@{(__bridge id)kAXTrustedCheckOptionPrompt: @YES});
     }
-    else {
-        static NSString* script = @"tell application \"System Preferences\"\nactivate\nset current pane to pane \"com.apple.preference.universalaccess\"\nend tell";
-        [[[NSAppleScript alloc] initWithSource:script] executeAndReturnError:nil];
-    }
+    NSURL *url = [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"];
+    [[NSWorkspace sharedWorkspace] openURL:url];
 }
+
