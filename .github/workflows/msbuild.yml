@@ -38,13 +38,13 @@ jobs:
       id: upload
       uses: actions/upload-artifact@v4
       with:
-        name: OpenKey
+        name: Gox
         path: |
           ${{env.SOLUTION_FILE_PATH}}/Release/
           ${{env.SOLUTION_FILE_PATH}}/x64/Release/
 
     outputs:
-      subject-name: OpenKey
+      subject-name: Gox
       subject-digest: ${{steps.upload.outputs.artifact-digest}}
 
   attest:
