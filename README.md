@@ -1,105 +1,89 @@
+# Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS
 
-# [OpenKey](http://open-key.org)
-### [Download bản mới nhất](https://github.com/tuyenvm/OpenKey/releases)
-[![GitHub release](https://img.shields.io/github/v/release/tuyenvm/OpenKey.svg)](https://github.com/tuyenvm/OpenKey/releases/latest)
+<p align="center">
+  <a href="https://github.com/tuyennq1001/gox/releases/latest">
+    <img src="https://img.shields.io/github/v/release/tuyennq1001/gox.svg?color=blue" alt="Latest Release">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-GPLv3-green.svg" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Platform-macOS-lightgrey.svg" alt="Platform">
+</p>
 
-### Open source Vietnamese Input App for macOS - Bộ gõ tiếng Việt nguồn mở cho macOS.
-Bộ gõ tiếng Việt mới cho macOS, sử dụng kỹ thuật `Backspace`. Loại bỏ lỗi gạch chân khó chịu ở bộ gõ mặc định. Hoàn toàn miễn phí và là nguồn mở, luôn cập nhật và phát triển.
+---
 
-### Mã nguồn của ứng dụng được mở công khai, minh bạch dưới giấy phép GPL. Điều này nghĩa là bạn hoàn toàn có thể tải mã nguồn về tự build, cải tiến theo mục đích của bạn. Nếu bạn tái phân phối bản cải tiến của bạn, thì nó cũng phải là mã nguồn mở và thông báo bản gốc là OpenKey.
+## Giới thiệu
+**Gox** là bộ gõ tiếng Việt hiện đại, mã nguồn mở dành riêng cho macOS. Được thiết kế với triết lý **tối giản, siêu nhẹ, zero-telemetry**, Gox giải quyết triệt để lỗi gạch chân, kẹt phím, đúp chữ trên các trình duyệt hiện đại (Chrome, Safari, Edge) và hoạt động mượt mà trong môi trường lập trình (VS Code, Xcode, Terminal).
 
-### Lưu ý, khi sử dụng OpenKey, bạn nên tắt hẳn bộ gõ khác vì 2 chương trình bộ gõ sẽ xung đột nhau, dẫn đến thao tác không chính xác.
+### Điểm nổi bật:
+* 🚀 **Siêu nhẹ & Hiệu năng cao**: Hot-path xử lý phím bấm được tối ưu triệt để, không gây lag con trỏ hay đơ bàn phím.
+* 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi dữ liệu ra ngoài.
+* 🌐 **Hòa hợp tuyệt đối với CJK**: Tự động bypass khi chuyển qua bộ gõ tiếng Nhật, tiếng Hàn hoặc tiếng Trung.
+* 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt/Tiếng Anh theo từng ứng dụng (Safari ↔ Terminal).
+* 🎯 **Khắc phục lỗi gõ trên Browser**: Tích hợp cơ chế sửa lỗi đúp từ trên Omnibox trình duyệt Chromium và Safari.
 
-![Giao diện](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-main-control.png "Main UI")
-![Giao diện](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-main-control-2.png "Main UI")
-![Giao diện](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-main-control-3.png "Main UI")
-![Menu](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-small-control.png "Menu bar")
-![Gõ tắt](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-macro.png "Macro")
-![Chuyển mã](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-convert-tool.png "ConvertTool")
+---
 
-## Hỗ trợ kiểu gõ
-- Telex
-- VNI
-- Simple Telex
+## Hỗ trợ Kiểu gõ & Bảng mã
 
-## Bảng mã thông dụng:
-- Unicode (Unicode dựng sẵn).
-- TCVN3 (ABC).
-- VNI Windows.
-- Unicode Compound (Unicode tổ hợp).
-- Vietnamese Locale CP 1258.
-- ...
+### Kiểu gõ:
+- **Telex** / **Simple Telex 1, 2**
+- **VNI**
 
-## Tính năng:
-- **Modern orthography** (On/Off) - Đặt dấu oà, uý thay vì òa, úy.
-- **Quick Telex** (On/Off) - Gõ nhanh (cc=ch, gg=gi, kk=kh, nn=ng, qq=qu, pp=ph, tt=th).
-- **Grammar check** (On/Off) - Kiểm tra ngữ pháp.
-- **Spelling check** (On/Off) - Kiểm tra chính tả.
-- **Restore key if invalid word** (on/off) - Phục hồi phím với từ sai.
-- **Run on startup** (On/Off) - Chạy cùng macOS.
-- **Gray menu bar icon** (On/Off) - Biểu tượng xám trên thanh menu phù hợp với chế độ Dark mode.
-- **Switch input mode by shortcut key** - Đổi chế độ gõ bằng phím tắt tùy chọn.
-- **Autocorrect fixed** (On/Off) - Sửa lỗi autocorrect trên trình duyệt như Chrome, Safari, Firefox, Microsoft Excel.
-- **Underline issue fixed on macOS** (On/Off) - Sửa lỗi gạch chân trên macOS.
-- **Tạm tắt kiểm tra chính tả bằng phím Ctrl** (On/Off) (Bản 1.5 về sau).
-- **Tạm tắt OpenKey bằng phím Cmd/Alt** (On/Off) (Bản 2.0.1 về sau).
-- **Cho phép dùng f z w j làm phụ âm đầu** (On/Off) (Bản 1.5 về sau).
-- **Gõ tắt phụ âm đầu: f->ph, j->gi, w->qu** (On/Off) (Bản 1.6 về sau).
-- **Gõ tắt phụ âm cuối: g->ng, h->nh, k->ch** (On/Off) (Bản 1.6 về sau).
-- **Hiện biểu tượng trên thanh Dock** (On/Off) (Bản 2.0.1 về sau). Bấm vào icon trên thanh Dock sẽ mở nhanh Bảng điều khiển.
-- **Macro** - Tính năng gõ tắt vô cùng tiện lợi. Gõ tắt của macOS chỉ hỗ trợ 20 ký tự, còn OpenKey không giới hạn ký tự.
-- **Chuyển chế độ thông minh:** (On/Off) (Bản 1.2 về sau) - Bạn đang dùng chế độ gõ Tiếng Việt trên ứng dụng A, bạn chuyển qua ứng dụng B trước đó bạn dùng chế độ gõ Tiếng Anh, OpenKey sẽ tự động chuyển qua chế độ gõ Tiếng Anh cho bạn, khi bạn quay lại ứng dụng A, OpenKey tất nhiên sẽ chuyển lại chế độ gõ tiếng Việt, rất cơ động.
-- **Viết Hoa chữ cái đầu câu** (On/Off) (Bản 1.2 về sau) - Khi gõ văn bản dài, đôi khi bạn quên ghi hoa chữ cái đầu câu khi kết thúc một câu hoặc khi xuống hàng, tính năng này sẽ tự ghi hoa chữ cái đầu câu cho bạn, thật tuyệt vời.
-- **Chế độ “Gửi từng phím”:** (On/Off) (Bản 1.1 về sau) mặc định dùng kỹ thuật mới gửi dữ liệu 1 lần thay vì gửi nhiều lần cho chuỗi ký tự, nên nếu có ứng dụng nào không tương thích, hãy bật tính năng này lên, mặc định thì nên tắt vì kỹ thuật mới sẽ chạy nhanh hơn.
-- **Cập nhật tự động:** (Bản 1.3 về sau) tính năng hỗ trợ cập nhật phiên bản OpenKey mới nhất mỗi khi mở OpenKey hoặc tự check trong phần mục Giới thiệu.
-- **Công cụ chuyển mã:** (Bản 1.4 về sau) hỗ trợ chuyển mã qua lại văn bản, thích hợp cho việc chuyển đổi văn bản cũ viết bằng VNI, TCVN3 qua Unicode,... Hỗ trợ cấu hình phím tắt chuyển mã nhanh, bảng cấu hình tùy chọn chuyển mã.
-- **Tự ghi nhớ bảng mã theo ứng dụng:** (Bản 2.0.1 về sau) Phù hợp cho các bạn dùng Photoshop, CAD,... với các bảng mã VNI, TCVN3. OpenKey tự ghi nhớ ứng dụng nào dùng bảng mã nào để lần sau sử dụng Photoshop, CAD,... OpenKey có thể tự chuyển sang bảng mã đó.
-- ...
+### Bảng mã:
+- **Unicode** (Dựng sẵn & Tổ hợp)
+- **TCVN3 (ABC)**
+- **VNI Windows**
+- **Vietnamese Locale CP 1258**
 
+---
 
-[Changelog](https://github.com/tuyenvm/OpenKey/blob/master/CHANGELOG.md)
+## Các tính năng chính
+- **Chuyển chế độ thông minh:** Tự động đổi Tiếng Việt/Tiếng Anh tương ứng với từng ứng dụng đang kích hoạt.
+- **Tự ghi nhớ bảng mã:** Ghi nhớ bảng mã riêng biệt cho từng phần mềm (Photoshop, AutoCAD, IDE...).
+- **Macro (Gõ tắt):** Hỗ trợ danh sách gõ tắt không giới hạn độ dài ký tự.
+- **Tạm tắt nhanh:** Nhấn phím `Command` hoặc `Ctrl` để tạm tắt bộ gõ khi cần gõ mã code hay phím tắt.
+- **Sửa lỗi gạch chân & Autocorrect:** Triệt tiêu hiện tượng gạch chân khó chịu trên macOS.
+- **Viết hoa đầu câu tự động:** Tự động viết hoa sau dấu chấm câu và khi xuống dòng.
+- **Công cụ chuyển mã tiện lợi:** Chuyển đổi nhanh giữa các chuẩn mã hóa trong Clipboard.
 
-## Cài đặt:
-**Cài đặt thủ công:**  
-Tải bản OpenKey mới nhất từ [đây](https://github.com/tuyenvm/OpenKey/releases/latest), mở file `dmg` ra rồi kéo thả `OpenKey.app` vào thư mục `Application`.
+---
 
-**Cài bằng Homebrew:** (by nhymxu)  
-Nếu chưa cài Homebrew, mở terminal, nhập:
+## Cài đặt & Sử dụng
+
+### 1. Tải về và cài đặt
+1. Tải file cài đặt `.dmg` bản mới nhất từ [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest).
+2. Mở file `.dmg` và kéo biểu tượng **`Gox.app`** vào thư mục **`Applications`**.
+
+### 2. Cấp quyền Trợ năng (Accessibility)
+Để Gox có thể gửi phím tiếng Việt vào hệ thống, bạn cần cấp quyền Trợ năng:
+1. Mở **Cài đặt hệ thống (System Settings)** ➔ **Quyền riêng tư & Bảo mật (Privacy & Security)** ➔ **Trợ năng (Accessibility)**.
+2. Bật công tắc cho **`Gox`**. *(Nếu đã có trong danh sách, hãy gạt tắt rồi bật lại)*.
+
+> [!TIP]
+> Hãy tắt hẳn bộ gõ tiếng Việt mặc định của macOS để tránh xung đột phím bấm.
+
+---
+
+## Tự Build từ Mã nguồn
+Yêu cầu macOS 10.14 trở lên và Xcode 11 trở lên:
+```bash
+git clone https://github.com/tuyennq1001/gox.git
+cd gox
+xcodebuild -project Sources/OpenKey/macOS/OpenKey.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 ```
-$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
+Chi tiết xem thêm tại [macOS_Build.md](macOS_Build.md).
 
-Kiểm tra phiên bản OpenKey:
-```
-$ brew info --cask openkey
-```
-Gõ lệnh sau để homebrew tự cài OpenKey cho bạn:
-```
-$ brew install --cask openkey
-```
+---
 
-Để update phiên bản mới nhất của OpenKey
-```
-$ brew upgrade --cask openkey
-```
+## Đóng góp & Báo lỗi
+Mọi ý kiến đóng góp, báo lỗi hoặc yêu cầu tính năng mới xin vui lòng gửi qua:
+- **Báo lỗi & Thảo luận**: [GitHub Issues](https://github.com/tuyennq1001/gox/issues)
+- **Pull Requests**: [GitHub PRs](https://github.com/tuyennq1001/gox/pulls)
 
-## Note - Lưu ý:
-OpenKey cần cấp quyền, vào *System Preferences -> Security & Privacy -> Accessibility*, kích hoạt `OpenKey.app`. **Không tắt nó khi đang dùng OpenKey**.
-![Guide](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/openkey-guide.png "Accessibility").
+---
 
-## Tác giả
-- Mai Vũ Tuyên.
-- Mọi góp ý, gửi cho mình qua maivutuyen.91@gmail.com  
-- Fanpage: [https://www.facebook.com/OpenKeyVN](https://www.facebook.com/OpenKeyVN)
-
-## Liên kết
-- [OpenKey cho Windows, xem chi tiết tại đây](https://github.com/tuyenvm/OpenKey/tree/master/Sources/OpenKey/win32)
-- [OpenKey cho Linux (đang phát triển)](https://github.com/tuyenvm/OpenKey/tree/master/Sources/OpenKey/linux)
-## Một điều nhỏ nhoi
-Đừng quên ủng hộ tác giả bằng cách mua ly cafe cho tác giả tỉnh ngủ nhé:  
-[Buy me a coffee ^^](https://tuyenvm.github.io/donate.html)  
-[Redbull cũng được ^^](https://paypal.me/tuyenmai)  
-Hoặc trực tiếp qua ví momo:   
-![Donate by momo](https://tuyenvm.github.io/images/momo.png "Momo").   
-
-Cảm ơn các bạn rất nhiều.
+## Ghi nhận & Bản quyền (Credits & License)
+- Phát triển và duy trì bởi **Terry Nguyen** ([@tuyennq1001](https://github.com/tuyennq1001)).
+- Kế thừa nền tảng thuật toán từ dự án mã nguồn mở OpenKey của tác giả **Mai Vũ Tuyên**.
+- Được phát hành dưới giấy phép mã nguồn mở [GNU General Public License v3.0](LICENSE).

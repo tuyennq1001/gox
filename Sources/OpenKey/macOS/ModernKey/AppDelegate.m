@@ -104,8 +104,8 @@ extern bool convertToolDontAlertWhenCompleted;
     MJAccessibilityOpenPanel();
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"OpenKey cần quyền Trợ năng (Accessibility)"];
-    [alert setInformativeText:@"1. Bật công tắc của OpenKey trong Cài đặt hệ thống > Trợ năng (Accessibility).\n2. Nếu đã có OpenKey trong danh sách, hãy gạt tắt rồi bật lại (hoặc bấm dấu '-' xoá đi và thêm lại).\n\nỨng dụng sẽ tự động kích hoạt ngay sau khi bạn cấp quyền!"];
+    [alert setMessageText:@"Gox cần quyền Trợ năng (Accessibility)"];
+    [alert setInformativeText:@"1. Bật công tắc của Gox trong Cài đặt hệ thống > Trợ năng (Accessibility).\n2. Nếu đã có Gox trong danh sách, hãy gạt tắt rồi bật lại (hoặc bấm dấu '-' xoá đi và thêm lại).\n\nỨng dụng sẽ tự động kích hoạt ngay sau khi bạn cấp quyền!"];
     [alert addButtonWithTitle:@"Mở Cài đặt Trợ năng"];
     [alert addButtonWithTitle:@"Thoát"];
     
@@ -117,7 +117,7 @@ extern bool convertToolDontAlertWhenCompleted;
         if (MJAccessibilityIsEnabled()) {
             [t invalidate];
             timer = nil;
-            NSLog(@"[OpenKey] Accessibility permission granted dynamically!");
+            NSLog(@"[Gox] Accessibility permission granted dynamically!");
             [NSApp abortModal];
             dispatch_async(dispatch_get_main_queue(), ^{
                 vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
@@ -154,7 +154,7 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 - (void)setupOpenKey {
-    NSLog(@"[OpenKey] Accessibility is enabled! Proceeding to setup.");
+    NSLog(@"[Gox] Accessibility is enabled! Proceeding to setup.");
     
     vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
     if (vShowIconOnDock)
@@ -198,7 +198,7 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    NSLog(@"[OpenKey] Launching, myPID=%d", [[NSProcessInfo processInfo] processIdentifier]);
+    NSLog(@"[Gox] Launching, myPID=%d", [[NSProcessInfo processInfo] processIdentifier]);
     appDelegate = self;
     
     [self registerSupportedNotification];
@@ -222,7 +222,7 @@ extern bool convertToolDontAlertWhenCompleted;
             struct proc_bsdinfo proc;
             int size = proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &proc, sizeof(proc));
             if (size == sizeof(proc) && proc.pbi_uid == currentUID && kill(pid, 0) == 0) {
-                NSLog(@"[OpenKey] Instance already running with PID %d", pid);
+                NSLog(@"[Gox] Instance already running with PID %d", pid);
                 alreadyRunning = YES;
                 break;
             }
@@ -230,14 +230,14 @@ extern bool convertToolDontAlertWhenCompleted;
     }
 
     if (alreadyRunning) {
-        NSLog(@"[OpenKey] Terminating because already running.");
+        NSLog(@"[Gox] Terminating because already running.");
         [NSApp terminate:nil];
         return;
     }
     
     // check if user granted Accessabilty permission
     if (!MJAccessibilityIsEnabled()) {
-        NSLog(@"[OpenKey] Accessibility is NOT enabled, waiting for permission.");
+        NSLog(@"[Gox] Accessibility is NOT enabled, waiting for permission.");
         [self waitForAccessibilityPermission];
         return;
     }
@@ -380,8 +380,8 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void)setRunOnStartup:(BOOL)val {
-    NSString *helperPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/Library/LoginItems/OpenKeyHelper.app"];
-    CFStringRef appId = (__bridge CFStringRef)@"com.tuyenmai.OpenKeyHelper";
+    NSString *helperPath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"Contents/Library/LoginItems/GoxHelper.app"];
+    CFStringRef appId = (__bridge CFStringRef)@"com.tuyennq1001.goxhelper";
     if (![[NSFileManager defaultManager] fileExistsAtPath:helperPath]) {
         SMLoginItemSetEnabled(appId, NO);
         return;

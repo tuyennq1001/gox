@@ -10,7 +10,8 @@
 #include <libproc.h>
 #include <sys/proc_info.h>
 
-#define OPENKEY_BUNDLE @"com.tuyenmai.openkey"
+#define GOX_BUNDLE @"com.tuyennq1001.gox"
+#define OPENKEY_BUNDLE GOX_BUNDLE
 
 @interface AppDelegate ()
 
