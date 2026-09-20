@@ -48,14 +48,20 @@ if [[ ! -f "$BG_IMG" ]]; then
 fi
 echo "✔ Ảnh nền HiDPI sẵn sàng: $BG_IMG"
 
+# 4. Ký mã Designated Requirement bảo toàn quyền Accessibility
+echo "=== [4/5] Ký mã Designated Requirement: com.tuyennq1001.gox ==="
+codesign --force --deep --sign - --requirements '=designated => identifier "com.tuyennq1001.gox"' "$APP_PATH"
+echo "✔ Ký mã thành công."
+
 VOL_ICON="Sources/OpenKey/macOS/ModernKey/Resources/Icon.icns"
 OUTPUT_DIR="build"
 OUTPUT_DMG="$OUTPUT_DIR/Gox.dmg"
+OUTPUT_ZIP="$OUTPUT_DIR/Gox.zip"
 
 mkdir -p "$OUTPUT_DIR"
 
-# 4. Đóng gói DMG bằng create-dmg
-echo "=== [4/4] Đang đóng gói DMG với giao diện kéo thả ==="
+# 5. Đóng gói DMG bằng create-dmg & ZIP cho Auto-Update
+echo "=== [5/5] Đang đóng gói DMG và ZIP ==="
 create-dmg \
     --volname "Gox Installer" \
     --volicon "$VOL_ICON" \
@@ -71,9 +77,13 @@ create-dmg \
     "$OUTPUT_DMG" \
     "$APP_PATH"
 
+echo "Đang nén Gox.zip cho In-App Auto-Update..."
+rm -f "$OUTPUT_ZIP"
+ditto -c -k --keepParent "$APP_PATH" "$OUTPUT_ZIP"
+
 echo ""
 echo "=================================================="
 echo "✔ ĐÓNG GÓI THÀNH CÔNG!"
-echo "File đầu ra: $OUTPUT_DMG"
-echo "Kích thước:  $(du -h "$OUTPUT_DMG" | cut -f1)"
+echo "File DMG:   $OUTPUT_DMG ($(du -h "$OUTPUT_DMG" | cut -f1))"
+echo "File ZIP:   $OUTPUT_ZIP ($(du -h "$OUTPUT_ZIP" | cut -f1))"
 echo "=================================================="
