@@ -1,5 +1,14 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.3: (20/09/2026)
+- **Tự động Cập nhật Không Gián đoạn (In-App Auto-Update via Menu Bar)**:
+  - Tự động kiểm tra bản mới định kỳ 24 giờ ngầm trong nền, không gây phiền nhiễu khi đang gõ phím.
+  - Tự động kiểm tra thông minh khi máy Mac thức dậy (`NSWorkspaceDidWakeNotification`) với độ trễ 10s chờ kết nối Wi-Fi ổn định.
+  - Tải ngầm và xác thực gói cập nhật an toàn (`Gox.zip` & `Gox.dmg`).
+  - Hiển thị thông báo trực tiếp trên Menu Bar: `✨ Có bản mới (v...), nhấn để khởi động lại`.
+  - Hỗ trợ cập nhật và khởi động lại 1-click mượt mà, bảo toàn 100% quyền Trợ năng (Accessibility) sau khi cập nhật.
+  - Tối giản giao diện: loại bỏ checkbox kiểm tra cập nhật thủ công lúc khởi động.
+
 ##### Version 1.0.2: (20/09/2026)
 - **Hỗ trợ toàn diện bàn phím Nhật Bản (JIS Layout)**:
   - Tự động nhận diện phần cứng/layout bàn phím JIS bằng API native macOS (`KBGetLayoutType` & `UCKeyTranslate`).

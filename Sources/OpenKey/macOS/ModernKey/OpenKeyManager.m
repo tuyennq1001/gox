@@ -233,13 +233,10 @@ static BOOL isDownloadingUpdate = NO;
     NSTimeInterval lastCheck = [[NSUserDefaults standardUserDefaults] doubleForKey:@"LastCheckUpdateTime"];
     NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
     
-    NSInteger dontCheckUpdate = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-    if (!dontCheckUpdate) {
-        if (lastCheck == 0 || (now - lastCheck) >= 24 * 3600) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self checkForUpdatesWithPrompt:NO parentWindow:nil callback:nil];
-            });
-        }
+    if (lastCheck == 0 || (now - lastCheck) >= 24 * 3600) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self checkForUpdatesWithPrompt:NO parentWindow:nil callback:nil];
+        });
     }
     
     // 3. Timer định kỳ mỗi 1 giờ để kiểm tra mốc 24h
@@ -248,9 +245,6 @@ static BOOL isDownloadingUpdate = NO;
         autoUpdateTimer = nil;
     }
     autoUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:3600.0 repeats:YES block:^(NSTimer * _Nonnull timer) {
-        NSInteger dontCheck = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-        if (dontCheck) return;
-        
         NSTimeInterval last = [[NSUserDefaults standardUserDefaults] doubleForKey:@"LastCheckUpdateTime"];
         NSTimeInterval current = [[NSDate date] timeIntervalSince1970];
         if (last == 0 || (current - last) >= 24 * 3600) {
@@ -261,13 +255,10 @@ static BOOL isDownloadingUpdate = NO;
 
 + (void)checkDueOnWake {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSInteger dontCheck = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-        if (!dontCheck) {
-            NSTimeInterval last = [[NSUserDefaults standardUserDefaults] doubleForKey:@"LastCheckUpdateTime"];
-            NSTimeInterval current = [[NSDate date] timeIntervalSince1970];
-            if (last == 0 || (current - last) >= 24 * 3600) {
-                [self checkForUpdatesWithPrompt:NO parentWindow:nil callback:nil];
-            }
+        NSTimeInterval last = [[NSUserDefaults standardUserDefaults] doubleForKey:@"LastCheckUpdateTime"];
+        NSTimeInterval current = [[NSDate date] timeIntervalSince1970];
+        if (last == 0 || (current - last) >= 24 * 3600) {
+            [self checkForUpdatesWithPrompt:NO parentWindow:nil callback:nil];
         }
     });
 }
