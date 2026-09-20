@@ -696,19 +696,7 @@ static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *obs
 }
 
 - (void)onRestartToUpdateSelected:(id)sender {
-    NSString *ver = [OpenKeyManager stagedVersionName] ?: @"mới";
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:[NSString stringWithFormat:@"Cập nhật Gox lên phiên bản %@", ver]];
-    [alert setInformativeText:@"Bản cập nhật đã được tải về sẵn sàng. Bạn có muốn khởi động lại Gox ngay bây giờ để áp dụng bản mới?"];
-    [alert addButtonWithTitle:@"Khởi động lại ngay"];
-    [alert addButtonWithTitle:@"Để sau"];
-    
-    [alert.window setLevel:NSStatusWindowLevel];
-    [alert.window makeKeyAndOrderFront:nil];
-    NSModalResponse res = [alert runModal];
-    if (res == NSAlertFirstButtonReturn) {
-        [OpenKeyManager applyUpdateAndRestart];
-    }
+    [OpenKeyManager applyUpdateAndRestart];
 }
 
 @end

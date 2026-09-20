@@ -353,23 +353,7 @@ static BOOL isDownloadingUpdate = NO;
                 if ([self isStagedAppValidForVersionCode:versionCode]) {
                     [appDelegate showRestartToUpdateMenu:versionName];
                     if (isManual) {
-                        NSAlert *alert = [[NSAlert alloc] init];
-                        [alert setMessageText:[NSString stringWithFormat:@"Đã có bản mới (v%@)", versionName]];
-                        [alert setInformativeText:@"Bản cập nhật đã được tải về sẵn sàng. Bạn có muốn khởi động lại Gox ngay bây giờ để áp dụng bản mới?"];
-                        [alert addButtonWithTitle:@"Khởi động lại ngay"];
-                        [alert addButtonWithTitle:@"Để sau"];
-                        if (parent) {
-                            [alert beginSheetModalForWindow:parent completionHandler:^(NSModalResponse returnCode) {
-                                if (returnCode == NSAlertFirstButtonReturn) {
-                                    [self applyUpdateAndRestart];
-                                }
-                            }];
-                        } else {
-                            [alert.window setLevel:NSStatusWindowLevel];
-                            if ([alert runModal] == NSAlertFirstButtonReturn) {
-                                [self applyUpdateAndRestart];
-                            }
-                        }
+                        [self applyUpdateAndRestart];
                     }
                 } else {
                     if (isManual) {
