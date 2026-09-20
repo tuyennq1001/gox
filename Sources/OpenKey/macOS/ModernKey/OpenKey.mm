@@ -87,6 +87,7 @@ extern "C" {
     NSString* _frontMostApp = @"UnknownApp";
     
     volatile BOOL isNonLatinInputActive = NO;
+    volatile BOOL isJISKeyboard = NO;
     
     void updateInputSourceState(void);
     
@@ -164,8 +165,37 @@ extern "C" {
     }
     
     void updateInputSourceState() {
+        UInt8 kbdType = LMGetKbdType();
+        BOOL detectedJIS = (KBGetLayoutType(kbdType) == kKeyboardJIS);
+        
         TISInputSourceRef currentSource = TISCopyCurrentKeyboardInputSource();
         if (currentSource) {
+            if (!detectedJIS) {
+                CFDataRef uchr = (CFDataRef)TISGetInputSourceProperty(currentSource, kTISPropertyUnicodeKeyLayoutData);
+                if (uchr) {
+                    const UCKeyboardLayout *keyboardLayout = (const UCKeyboardLayout*)CFDataGetBytePtr(uchr);
+                    UInt32 deadKeyState = 0;
+                    UniCharCount actualStringLength = 0;
+                    UniChar unicodeString[4];
+                    OSStatus status = UCKeyTranslate(
+                        keyboardLayout,
+                        33,
+                        kUCKeyActionDown,
+                        0,
+                        kbdType,
+                        kUCKeyTranslateNoDeadKeysBit,
+                        &deadKeyState,
+                        4,
+                        &actualStringLength,
+                        unicodeString
+                    );
+                    if (status == noErr && actualStringLength > 0 && unicodeString[0] == '@') {
+                        detectedJIS = YES;
+                    }
+                }
+            }
+            isJISKeyboard = detectedJIS;
+            
             NSString *sourceID = (__bridge NSString *)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceID);
             CFArrayRef languages = (CFArrayRef)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceLanguages);
             
@@ -683,7 +713,24 @@ extern "C" {
         _flag = CGEventGetFlags(event);
         _keycode = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
         
-        if (type == kCGEventKeyDown && vPerformLayoutCompat) {
+        // Handle Japanese JIS layout:
+        // Keycode 33 is physically '@' (never '[').
+        // Keycode 30 is physically '[' (mapped to KEY_LEFT_BRACKET = 33).
+        // Keycode 42 is physically ']' (mapped to KEY_RIGHT_BRACKET = 30).
+        if (isJISKeyboard) {
+            if (_keycode == 33) {
+                if (type == kCGEventKeyDown) {
+                    RequestNewSession();
+                }
+                return event;
+            } else if (_keycode == 30) {
+                _keycode = 33;
+            } else if (_keycode == 42) {
+                _keycode = 30;
+            }
+        }
+        
+        if (type == kCGEventKeyDown && vPerformLayoutCompat && !isJISKeyboard) {
             // If conversion fail, use current keycode
            _keycode = ConvertEventToKeyboadLayoutCompatKeyCode(event, _keycode);
         }
