@@ -1,5 +1,11 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.2: (20/09/2026)
+- **Hỗ trợ toàn diện bàn phím Nhật Bản (JIS Layout)**:
+  - Tự động nhận diện phần cứng/layout bàn phím JIS bằng API native macOS (`KBGetLayoutType` & `UCKeyTranslate`).
+  - Khắc phục lỗi gõ phím `@` (keycode 33) bị biến thành `ơ` trên bàn phím Nhật.
+  - Ánh xạ chuẩn xác phím `[` (keycode 30 trên JIS) và `]` (keycode 42 trên JIS) cho kiểu gõ Telex (`[` ➔ `ơ`, `]` ➔ `ư`).
+
 ##### Version 1.0.1: (20/09/2026)
 - **Bộ cài đặt DMG kéo thả trực quan**:
   - Tích hợp ảnh nền HiDPI đa phân giải (`assets/dmg_background.tiff`) hiển thị sắc nét trên cả màn hình thường và màn hình Retina (Zero Blur).
