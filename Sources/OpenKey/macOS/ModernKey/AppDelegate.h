@@ -32,5 +32,8 @@
 -(void)setQuickConvertString;
 
 -(void)showIconOnDock:(BOOL)val;
+
+-(void)showRestartToUpdateMenu:(NSString *)versionName;
+-(void)hideRestartToUpdateMenu;
 @end
 

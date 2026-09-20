@@ -91,6 +91,9 @@ extern bool convertToolDontAlertWhenCompleted;
     NSMenuItem* mnuVietnameseLocaleCP1258;
     
     NSMenuItem* mnuQuickConvert;
+    
+    NSMenuItem* menuUpdateAvailable;
+    NSMenuItem* menuUpdateSeparator;
 }
 
 -(void)askPermission {
@@ -184,10 +187,8 @@ extern bool convertToolDontAlertWhenCompleted;
     }
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"NonFirstTime"];
     
-    //check update if enable
-    NSInteger dontCheckUpdate = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-    if (!dontCheckUpdate)
-        [OpenKeyManager checkNewVersion:nil callbackFunc:nil];
+    //auto update setup: 24h periodic check, staged updates
+    [OpenKeyManager startAutoUpdateTimer];
     
     //correct run on startup
     NSInteger val = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
@@ -610,6 +611,7 @@ static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *obs
 -(void)receiveWakeNote: (NSNotification*)note {
     [OpenKeyManager initEventTap];
     updateInputSourceState();
+    [OpenKeyManager checkDueOnWake];
 }
 
 -(void)receiveSleepNote: (NSNotification*)note {
@@ -658,4 +660,55 @@ static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *obs
                                     NULL,
                                     CFNotificationSuspensionBehaviorDeliverImmediately);
 }
+
+#pragma mark - In-App Auto Update Menu Item
+
+- (void)showRestartToUpdateMenu:(NSString *)versionName {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *title = [NSString stringWithFormat:@"✨ Có bản mới (v%@), nhấn để khởi động lại", versionName];
+        if (self->menuUpdateAvailable) {
+            [self->menuUpdateAvailable setTitle:title];
+            return;
+        }
+        
+        self->menuUpdateAvailable = [[NSMenuItem alloc] initWithTitle:title
+                                                               action:@selector(onRestartToUpdateSelected:)
+                                                        keyEquivalent:@""];
+        [self->menuUpdateAvailable setTarget:self];
+        self->menuUpdateSeparator = [NSMenuItem separatorItem];
+        
+        [self->theMenu insertItem:self->menuUpdateSeparator atIndex:0];
+        [self->theMenu insertItem:self->menuUpdateAvailable atIndex:0];
+    });
+}
+
+- (void)hideRestartToUpdateMenu {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self->menuUpdateAvailable) {
+            [self->theMenu removeItem:self->menuUpdateAvailable];
+            self->menuUpdateAvailable = nil;
+        }
+        if (self->menuUpdateSeparator) {
+            [self->theMenu removeItem:self->menuUpdateSeparator];
+            self->menuUpdateSeparator = nil;
+        }
+    });
+}
+
+- (void)onRestartToUpdateSelected:(id)sender {
+    NSString *ver = [OpenKeyManager stagedVersionName] ?: @"mới";
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:[NSString stringWithFormat:@"Cập nhật Gox lên phiên bản %@", ver]];
+    [alert setInformativeText:@"Bản cập nhật đã được tải về sẵn sàng. Bạn có muốn khởi động lại Gox ngay bây giờ để áp dụng bản mới?"];
+    [alert addButtonWithTitle:@"Khởi động lại ngay"];
+    [alert addButtonWithTitle:@"Để sau"];
+    
+    [alert.window setLevel:NSStatusWindowLevel];
+    [alert.window makeKeyAndOrderFront:nil];
+    NSModalResponse res = [alert runModal];
+    if (res == NSAlertFirstButtonReturn) {
+        [OpenKeyManager applyUpdateAndRestart];
+    }
+}
+
 @end

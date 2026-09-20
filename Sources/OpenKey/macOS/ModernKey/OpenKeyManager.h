@@ -25,6 +25,15 @@ typedef void (^CheckNewVersionCallback)(void);
 
 +(BOOL)quickConvert;
 
++(void)startAutoUpdateTimer;
++(void)checkStagedUpdate;
++(void)checkDueOnWake;
++(void)checkForUpdatesWithPrompt:(BOOL)isManual parentWindow:(NSWindow*)parent callback:(CheckNewVersionCallback)callback;
++(void)applyUpdateAndRestart;
++(NSString*)stagedVersionName;
++(int)stagedVersionCode;
++(BOOL)hasReadyUpdate;
+
 +(void)checkNewVersion:(NSWindow*)parent callbackFunc:(CheckNewVersionCallback) callback;
 @end
 
