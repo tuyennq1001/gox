@@ -1,6 +1,17 @@
-# OpenKey Change Log
+# Gox (OpenKey) Change Log
 
-##### OpenKey for Linux: (in development)
+##### Version 1.0.1: (20/09/2026)
+- **Bộ cài đặt DMG kéo thả trực quan**:
+  - Tích hợp ảnh nền HiDPI đa phân giải (`assets/dmg_background.tiff`) hiển thị sắc nét trên cả màn hình thường và màn hình Retina (Zero Blur).
+  - Bổ sung mũi tên gradient thương hiệu GOX hướng dẫn kéo thả `Gox.app` vào thư mục `Applications`.
+  - Tự động hóa quy trình build và đóng gói qua script `scripts/package_dmg.sh`.
+
+##### Version 1.0: (20/09/2026)
+- Bản phát hành chính thức đầu tiên của Gox cho macOS.
+- Logo thương hiệu Dynamic GX 3D mới.
+- Khả năng dùng song song mượt mà với bộ gõ tiếng Nhật (bypass tự động cho Kotoeri, Google Japanese Input).
+- Tối ưu hiệu năng Universal Binary (Apple Silicon + Intel), ký mã cố định Designated Requirement lưu quyền Accessibility.
+- Zero telemetry, hoạt động offline an toàn.
 
 ##### Version 1.2 RC5: (26/08/2019)
 - Sửa lỗi không gõ được chữ "quởn".
