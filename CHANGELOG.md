@@ -1,5 +1,10 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.4: (20/09/2026)
+- **Cập nhật tức thì 1-Click (Instant 1-Click Update)**:
+  - Khởi động lại và áp dụng bản mới ngay lập tức khi click vào mục cập nhật trên Menu Bar.
+  - Loại bỏ hoàn toàn hộp thoại xác nhận trung gian, mang lại trải nghiệm nâng cấp mượt mà nhất.
+
 ##### Version 1.0.3: (20/09/2026)
 - **Tự động Cập nhật Không Gián đoạn (In-App Auto-Update via Menu Bar)**:
   - Tự động kiểm tra bản mới định kỳ 24 giờ ngầm trong nền, không gây phiền nhiễu khi đang gõ phím.
