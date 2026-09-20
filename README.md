@@ -5,6 +5,10 @@
 <h1 align="center">Gox — Bộ gõ Tiếng Việt thế hệ mới cho macOS</h1>
 
 <p align="center">
+  <strong>🌟 Bộ gõ Tiếng Việt tương thích hoàn hảo với Tiếng Nhật trên macOS — Cứ chuyển là gõ, không cần tắt bộ gõ!</strong>
+</p>
+
+<p align="center">
   <a href="https://github.com/tuyennq1001/gox/releases/latest">
     <img src="https://img.shields.io/github/v/release/tuyennq1001/gox.svg?color=blue" alt="Latest Release">
   </a>
@@ -19,10 +23,16 @@
 ## Giới thiệu
 **Gox** là bộ gõ tiếng Việt hiện đại, mã nguồn mở dành riêng cho macOS. Được thiết kế với triết lý **tối giản, siêu nhẹ, zero-telemetry**, Gox giải quyết triệt để lỗi gạch chân, kẹt phím, đúp chữ trên các trình duyệt hiện đại (Chrome, Safari, Edge) và hoạt động mượt mà trong môi trường lập trình (VS Code, Xcode, Terminal).
 
+> [!IMPORTANT]
+> ### 🇯🇵 Trải nghiệm song ngữ Việt – Nhật mượt mà: Không cần tắt bộ gõ!
+> * **Nỗi đau phổ biến**: Trên macOS, các bộ gõ tiếng Việt thông thường (EVKey, OpenKey, GoTiengViet...) đều bắt phím ngầm và gửi phím Backspace giả lập, làm vỡ bộ đệm tổ hợp Romaji ➔ Hiragana/Kanji của IME tiếng Nhật (Kotoeri, Google Japanese Input). Người dùng luôn phải nhớ chuyển bộ gõ sang Tiếng Anh (E) hoặc tắt hẳn trước khi gõ tiếng Nhật.
+> * **Giải pháp đột phá của Gox**: Gox tự động lắng nghe sự kiện thay đổi bộ gõ của hệ thống. Khi bạn chuyển sang Tiếng Nhật, Gox kích hoạt cơ chế **Bypass nguyên bản** — phím bấm được chuyển thẳng đến IME tiếng Nhật. **Bạn hoàn toàn không cần tắt Gox, không cần chuyển về Tiếng Anh (E), cứ chuyển đổi ngôn ngữ là gõ được ngay.**
+
 ### Điểm nổi bật:
+* 🇯🇵 **Dùng song song Tiếng Nhật (Không cần tắt Gox)**: Thoải mái gõ tiếng Nhật (Kotoeri mặc định, Google Japanese Input...) song song với tiếng Việt 24/7. Tự động nhận diện và bypass phím bấm nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji/Hiragana/Kanji.
 * 🚀 **Siêu nhẹ & Hiệu năng cao**: Hot-path xử lý phím bấm được tối ưu triệt để, không gây lag con trỏ hay đơ bàn phím.
-* 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi dữ liệu ra ngoài.
-* 🇯🇵 **Dùng song song bộ gõ Tiếng Nhật (không cần tắt)**: Thoải mái gõ tiếng Nhật (Kotoeri, Google Japanese Input...) song song với tiếng Việt. Gox tự động nhận diện và bypass phím bấm nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji/Hiragana/Kanji.
+* 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi bất kỳ dữ liệu nào ra ngoài.
+* ✨ **Cập nhật 1-Click tức thì (In-App Auto-Update)**: Tự động kiểm tra bản mới định kỳ 24h ngầm trong nền. Nâng cấp phiên bản mới chỉ với 1 cú click trên Menu Bar mà không làm gián đoạn công việc.
 * 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt/Tiếng Anh theo từng ứng dụng (Safari ↔ Terminal).
 * 🎯 **Khắc phục lỗi gõ trên Browser**: Tích hợp cơ chế sửa lỗi đúp từ trên Omnibox trình duyệt Chromium và Safari.
 
@@ -70,7 +80,7 @@
 
 > [!NOTE]
 > **Dành cho người dùng tiếng Nhật (Japanese IME)**:
-> Bạn có thể chuyển qua lại giữa Tiếng Nhật và Tiếng Việt bằng phím tắt hệ thống macOS thông thường (`Control + Space` hoặc phím `Globe/Fn`). Gox tự động phát hiện và bypass hoàn toàn, không cần phải tắt Gox hay chuyển về Tiếng Anh thủ công.
+> Bạn có thể chuyển qua lại giữa Tiếng Nhật và Tiếng Việt bằng phím tắt hệ thống macOS thông thường (`Control + Space`, phím `Globe/Fn` hoặc phím `かな/英数` trên bàn phím JIS). Gox tự động phát hiện và bypass hoàn toàn — **tuyệt đối không cần phải tắt Gox hay chuyển về Tiếng Anh thủ công**.
 
 ---
 
@@ -79,7 +89,7 @@ Yêu cầu macOS 10.14 trở lên và Xcode 11 trở lên:
 ```bash
 git clone https://github.com/tuyennq1001/gox.git
 cd gox
-xcodebuild -project Sources/OpenKey/macOS/OpenKey.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+xcodebuild -project Sources/OpenKey/macOS/Gox.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 ```
 Chi tiết xem thêm tại [macOS_Build.md](macOS_Build.md).
 
