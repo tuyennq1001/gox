@@ -368,11 +368,6 @@ extern void updateInputSourceState(void);
     [appDelegate showIconOnDock:vShowIconOnDock];
 }
 
-- (IBAction)onCheckNewVersionOnStartup:(NSButton *)sender {
-    NSInteger val = sender.state == NSControlStateValueOn ? 0 : 1;
-    [[NSUserDefaults standardUserDefaults] setInteger:val forKey:@"DontCheckUpdate"];
-}
-
 - (IBAction)onFixChromiumBrowser:(NSButton *)sender {
     NSInteger val = [self setCustomValue:sender keyToSet:@"vFixChromiumBrowser"];
     vFixChromiumBrowser = (int)val;
@@ -474,9 +469,6 @@ extern void updateInputSourceState(void);
     
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
     self.ShowIconOnDock.state = value ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    value = [[NSUserDefaults standardUserDefaults] integerForKey:@"DontCheckUpdate"];
-    self.CheckNewVersionOnStartup.state = value ? NSControlStateValueOff :NSControlStateValueOn;
     
     value = [[NSUserDefaults standardUserDefaults] integerForKey:@"vFixChromiumBrowser"];
     self.FixChromiumBrowser.state = value ? NSControlStateValueOn : NSControlStateValueOff;
