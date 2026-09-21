@@ -69,6 +69,11 @@
 ### 1. Tải về và cài đặt
 1. Tải file cài đặt `.dmg` bản mới nhất từ [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest).
 2. Mở file `.dmg` và kéo biểu tượng **`Gox.app`** vào thư mục **`Applications`**.
+3. **Mở ứng dụng lần đầu (Bỏ qua cảnh báo Gatekeeper)**:
+   - Do Gox là phần mềm nguồn mở miễn phí và chưa đăng ký chứng chỉ Apple Developer có phí ($99/năm), macOS sẽ chặn mở mặc định khi bạn nhấp đúp chuột lần đầu.
+   - **Cách mở**: Nhấp **chuột phải (hoặc giữ phím Control + click)** vào `Gox.app` trong thư mục `Applications` ➔ Chọn **Mở (Open)** ➔ Chọn tiếp **Mở (Open)** ở hộp thoại xác nhận.
+   - *(Hoặc vào **Cài đặt hệ thống** ➔ **Quyền riêng tư & Bảo mật** ➔ kéo xuống mục Bảo mật và bấm **Mở mọi lúc / Open Anyway**)*.
+   - *Lưu ý: Thao tác này chỉ cần thực hiện đúng 1 lần duy nhất khi cài đặt mới. Từ các lần mở sau hoặc khi cập nhật tự động, bạn mở bình thường không bị hỏi lại.*
 
 ### 2. Cấp quyền Trợ năng (Accessibility)
 Để Gox có thể gửi phím tiếng Việt vào hệ thống, bạn cần cấp quyền Trợ năng:
