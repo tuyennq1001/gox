@@ -1,5 +1,12 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.5: (25/09/2026)
+- **Tự động phục hồi Event Tap & Loại bỏ trễ Hot-Path (Event Tap Recovery & Latency Elimination)**:
+  - Tự động phát hiện và kích hoạt lại Event Tap ngay lập tức khi nhận sự kiện `kCGEventTapDisabledByTimeout` hoặc `kCGEventTapDisabledByUserInput`, triệt tiêu hoàn toàn hiện tượng bộ gõ đột nhiên bị mất tác dụng.
+  - Loại bỏ hoàn toàn cuộc gọi đồng bộ `TISCopyCurrentKeyboardInputSource` khỏi luồng gõ phím ở đầu mỗi từ.
+  - Tối ưu hóa kiểm tra cửa sổ Spotlight với bộ nhớ đệm cache 500ms.
+  - Bổ sung Watchdog Timer chạy ngầm định kỳ mỗi 1.5s để bảo vệ trạng thái hoạt động của Event Tap liên tục.
+
 ##### Version 1.0.4: (20/09/2026)
 - **Cập nhật tức thì 1-Click (Instant 1-Click Update)**:
   - Khởi động lại và áp dụng bản mới ngay lập tức khi click vào mục cập nhật trên Menu Bar.
