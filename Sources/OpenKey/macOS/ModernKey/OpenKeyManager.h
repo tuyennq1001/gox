@@ -17,6 +17,15 @@ typedef void (^CheckNewVersionCallback)(void);
 +(BOOL)isInited;
 +(BOOL)initEventTap;
 +(BOOL)stopEventTap;
++(void)reenableEventTap;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+void ReenableEventTap(void);
+#ifdef __cplusplus
+}
+#endif
 
 +(NSArray*)getTableCodes;
 
