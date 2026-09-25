@@ -29,7 +29,7 @@ if [[ ! -d "$APP_PATH" ]]; then
                CODE_SIGN_IDENTITY="" \
                CODE_SIGNING_REQUIRED=NO \
                CODE_SIGNING_ALLOWED=NO \
-               MACOSX_DEPLOYMENT_TARGET=10.14 \
+               MACOSX_DEPLOYMENT_TARGET=12.0 \
                -derivedDataPath build/DerivedData
 fi
 
