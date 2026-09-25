@@ -8,9 +8,11 @@
 #import <Cocoa/Cocoa.h>
 #import <Carbon/Carbon.h>
 #import <Foundation/Foundation.h>
+#import <mach/mach_time.h>
 #import "Engine.h"
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "OpenKeyManager.h"
 
 #define FRONT_APP [[NSWorkspace sharedWorkspace] frontmostApplication].bundleIdentifier
 #define OTHER_CONTROL_KEY (_flag & kCGEventFlagMaskCommand) || (_flag & kCGEventFlagMaskControl) || \
@@ -267,26 +269,44 @@ extern "C" {
         return false;
     }
 
+    static uint64_t lastSpotlightCheckTime = 0;
+    static BOOL cachedSpotlightVisible = NO;
+
     BOOL isSpotlightVisible() {
+        uint64_t now = mach_absolute_time();
+        static mach_timebase_info_data_t timebase;
+        if (timebase.denom == 0) {
+            mach_timebase_info(&timebase);
+        }
+        uint64_t elapsedMs = ((now - lastSpotlightCheckTime) * timebase.numer) / (timebase.denom * 1000000ULL);
+        if (elapsedMs < 500) {
+            return cachedSpotlightVisible;
+        }
+        lastSpotlightCheckTime = now;
+        
         NSArray *windows = CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements,
                                                                         kCGNullWindowID));
         for (NSDictionary *window in windows) {
             if ([[window objectForKey:(__bridge NSString *)kCGWindowOwnerName] isEqualToString:@"Spotlight"]) {
+                cachedSpotlightVisible = YES;
                 return true;
             }
         }
+        cachedSpotlightVisible = NO;
         return false;
     }
 
     BOOL shouldUseRecommendWorkaround(NSString* topApp) {
         if (!vFixRecommendBrowser) return false;
+        if (topApp != nil && [_recommendWorkaroundDisabledApp containsObject:topApp]) return false;
         if (isSpotlightVisible()) return false;
         if (topApp == nil) return true;
-        return ![_recommendWorkaroundDisabledApp containsObject:topApp];
+        return true;
     }
 
     BOOL shouldUseSelectionReplacement(NSString* topApp) {
-        return isSpotlightVisible() || [_recommendWorkaroundDisabledApp containsObject:topApp];
+        if (topApp != nil && [_recommendWorkaroundDisabledApp containsObject:topApp]) return true;
+        return isSpotlightVisible();
     }
     
     void saveSmartSwitchKeyData() {
@@ -691,6 +711,16 @@ extern "C" {
      * MAIN Callback.
      */
     CGEventRef OpenKeyCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
+        // Recover event tap immediately if disabled by timeout or user input
+        if (type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput) {
+            ReenableEventTap();
+            return event;
+        }
+        
+        if (event == NULL) {
+            return NULL;
+        }
+        
         //dont handle my event
         if (CGEventGetIntegerValueField(event, kCGEventSourceStateID) == CGEventSourceGetSourceStateID(myEventSource)) {
             return event;
@@ -699,15 +729,6 @@ extern "C" {
         // Fast bypass if non-Latin / CJK is active
         if (isNonLatinInputActive) {
             return event;
-        }
-        
-        // On key down when starting a new sequence, verify input source state
-        // to catch any input source switch immediately
-        if (type == kCGEventKeyDown && _syncKey.empty()) {
-            updateInputSourceState();
-            if (isNonLatinInputActive) {
-                return event;
-            }
         }
         
         _flag = CGEventGetFlags(event);

@@ -33,6 +33,41 @@ static BOOL _isInited = NO;
 static CFMachPortRef      eventTap;
 static CGEventMask        eventMask;
 static CFRunLoopSourceRef runLoopSource;
+static NSTimer            *eventTapWatchdogTimer = nil;
+
+void ReenableEventTap(void) {
+    if (eventTap != NULL) {
+        CGEventTapEnable(eventTap, true);
+    }
+}
+
++(void)reenableEventTap {
+    ReenableEventTap();
+}
+
++(void)startWatchdogTimer {
+    if (eventTapWatchdogTimer == nil) {
+        eventTapWatchdogTimer = [NSTimer scheduledTimerWithTimeInterval:1.5
+                                                                 target:self
+                                                               selector:@selector(watchdogCheckEventTap)
+                                                               userInfo:nil
+                                                                repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:eventTapWatchdogTimer forMode:NSRunLoopCommonModes];
+    }
+}
+
++(void)stopWatchdogTimer {
+    if (eventTapWatchdogTimer != nil) {
+        [eventTapWatchdogTimer invalidate];
+        eventTapWatchdogTimer = nil;
+    }
+}
+
++(void)watchdogCheckEventTap {
+    if (eventTap != NULL && !CGEventTapIsEnabled(eventTap)) {
+        CGEventTapEnable(eventTap, true);
+    }
+}
 
 +(BOOL)isInited {
     return _isInited;
@@ -78,11 +113,16 @@ static CFRunLoopSourceRef runLoopSource;
     // Enable the event tap.
     CGEventTapEnable(eventTap, true);
     
+    // Start watchdog timer to keep event tap alive
+    [self startWatchdogTimer];
+    
     return YES;
 }
 
 +(BOOL)stopEventTap {
     if (_isInited) { //release all object
+        [self stopWatchdogTimer];
+        
         CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes);
         CFRelease(runLoopSource);
         runLoopSource = nil;
