@@ -1,5 +1,10 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.6: (26/09/2026)
+- **Tương thích toàn diện chế độ Roman của bộ gõ CJK & Bàn phím Nhật (JIS)**:
+  - Khắc phục lỗi nhận diện sai chế độ Roman / Alphanumeric của các bộ gõ CJK (như `Google Japanese Input - Roman`, `Apple Kotoeri Roman`), cho phép gõ tiếng Việt mượt mà khi bộ gõ đang ở chế độ gõ chữ Latinh (chữ A).
+  - Tránh đánh dấu tiếng Việt (`vi`) là ngôn ngữ ngoại lai trong bộ kiểm tra nguồn gõ hệ thống, ngăn chặn việc tự động tắt tiếng Việt khi cài đặt trên máy Mac tiếng Việt.
+
 ##### Version 1.0.5: (25/09/2026)
 - **Tự động phục hồi Event Tap & Loại bỏ trễ Hot-Path (Event Tap Recovery & Latency Elimination)**:
   - Tự động phát hiện và kích hoạt lại Event Tap ngay lập tức khi nhận sự kiện `kCGEventTapDisabledByTimeout` hoặc `kCGEventTapDisabledByUserInput`, triệt tiêu hoàn toàn hiện tượng bộ gõ đột nhiên bị mất tác dụng.
