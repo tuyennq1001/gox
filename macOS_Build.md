@@ -8,7 +8,7 @@ Yêu cầu:
 
 ### Build bằng dòng lệnh (CLI):
 ```bash
-xcodebuild -project Sources/OpenKey/macOS/Gox.xcodeproj -scheme Gox -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO MACOSX_DEPLOYMENT_TARGET=10.14 -derivedDataPath build/DerivedData
+xcodebuild -project Sources/Gox/macOS/Gox.xcodeproj -scheme Gox -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO MACOSX_DEPLOYMENT_TARGET=12.0 -derivedDataPath build/DerivedData
 ```
 File ứng dụng `Gox.app` sẽ được tạo ra tại thư mục `build/DerivedData/Build/Products/Release/Gox.app`.
 
@@ -20,7 +20,7 @@ Sau khi build xong hoặc để script tự động build và đóng gói:
 File cài đặt `build/Gox.dmg` sẽ được tạo ra với giao diện chuẩn macOS (ảnh nền, mũi tên chỉ dẫn kéo icon `Gox.app` vào thư mục `Applications`).
 
 ### Build bằng Xcode:
-1. Mở `Sources/OpenKey/macOS/Gox.xcodeproj` bằng Xcode.
+1. Mở `Sources/Gox/macOS/Gox.xcodeproj` bằng Xcode.
 2. Chọn scheme **Gox**.
 3. Bấm **Cmd + B** để biên dịch hoặc vào menu **Product -> Archive** để đóng gói.
 

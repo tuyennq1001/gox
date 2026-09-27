@@ -94,7 +94,7 @@ Yêu cầu macOS 10.14 trở lên và Xcode 11 trở lên:
 ```bash
 git clone https://github.com/tuyennq1001/gox.git
 cd gox
-xcodebuild -project Sources/OpenKey/macOS/Gox.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+xcodebuild -project Sources/Gox/macOS/Gox.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
 ```
 Chi tiết xem thêm tại [macOS_Build.md](macOS_Build.md).
 
