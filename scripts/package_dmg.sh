@@ -22,7 +22,7 @@ echo "=== [2/4] Kiểm tra binary Gox.app ==="
 APP_PATH="build/DerivedData/Build/Products/Release/Gox.app"
 if [[ ! -d "$APP_PATH" ]]; then
     echo "Chưa tìm thấy Gox.app bản Release, tiến hành build bằng xcodebuild..."
-    xcodebuild -project Sources/OpenKey/macOS/Gox.xcodeproj \
+    xcodebuild -project Sources/Gox/macOS/Gox.xcodeproj \
                -scheme Gox \
                -configuration Release \
                build \
@@ -53,7 +53,7 @@ echo "=== [4/5] Ký mã Designated Requirement: com.tuyennq1001.gox ==="
 codesign --force --deep --sign - --requirements '=designated => identifier "com.tuyennq1001.gox"' "$APP_PATH"
 echo "✔ Ký mã thành công."
 
-VOL_ICON="Sources/OpenKey/macOS/ModernKey/Resources/Icon.icns"
+VOL_ICON="Sources/Gox/macOS/ModernKey/Resources/Icon.icns"
 OUTPUT_DIR="build"
 OUTPUT_DMG="$OUTPUT_DIR/Gox.dmg"
 OUTPUT_ZIP="$OUTPUT_DIR/Gox.zip"

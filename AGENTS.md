@@ -111,7 +111,7 @@ Khi giải quyết bất kỳ lỗi hoặc phát triển tính năng nào, bắt
 ---
 
 ## 4. Tính Toàn vẹn Thuật toán Bộ gõ Tiếng Việt (Vietnamese Engine Integrity)
-- **Bảo toàn lõi C++ (Shared Engine)**: Toàn bộ thuật toán phân tích âm tiết, bỏ dấu, gõ tắt và chuyển mã nằm trong `Sources/OpenKey/engine/` được dùng chung giữa macOS và Windows. Mọi sửa đổi phải đảm bảo tính tương thích chéo nền tảng (Cross-platform C++11).
+- **Bảo toàn lõi C++ (Shared Engine)**: Toàn bộ thuật toán phân tích âm tiết, bỏ dấu, gõ tắt và chuyển mã nằm trong `Sources/Gox/engine/` được dùng chung giữa macOS và Windows. Mọi sửa đổi phải đảm bảo tính tương thích chéo nền tảng (Cross-platform C++11).
 - **Đầy đủ Kiểu gõ & Bảng mã**: Đảm bảo hoạt động chuẩn xác cho tất cả kiểu gõ (Telex, VNI, Simple Telex 1, 2) và bảng mã (Unicode dựng sẵn, TCVN3, VNI Windows, Unicode tổ hợp, CP 1258).
 - **Tương thích Trình duyệt & Ô nhập liệu đặc thù**: Tôn trọng và kiểm tra kỹ các cờ tương thích trình duyệt (`vFixRecommendBrowser`, `vFixChromiumBrowser`) để xử lý việc xóa từ gợi ý trên thanh địa chỉ (Omnibox) mượt mà.
 
@@ -124,7 +124,7 @@ Khi giải quyết bất kỳ lỗi hoặc phát triển tính năng nào, bắt
 ---
 
 ## 6. Quy tắc Build & Đóng gói macOS (Build & Packaging Rules)
-- **Lệnh build chuẩn**: Sử dụng `xcodebuild` với scheme `Gox` trong `Sources/OpenKey/macOS/Gox.xcodeproj`.
+- **Lệnh build chuẩn**: Sử dụng `xcodebuild` với scheme `Gox` trong `Sources/Gox/macOS/Gox.xcodeproj`.
 - **Hỗ trợ Apple Silicon & Intel**: Đảm bảo source code biên dịch sạch trên kiến trúc `arm64` (Apple Silicon) và `x86_64` (Intel).
 - **Giữ kho mã nguồn sạch**: Không commit các thư mục build tạm (`build/`, `DerivedData/`, file `.DS_Store`).
 
