@@ -1,11 +1,13 @@
 # Gox (OpenKey) Change Log
 
-##### Version 1.0.6: (27/09/2026)
+##### Version 1.0.7: (27/09/2026)
 - **Ký mã Apple Developer ID & Công chứng chính thức (Apple Notarization)**:
-  - Ký số ứng dụng và bộ cài đặt DMG bằng chứng chỉ chính thức `Developer ID Application: RELIPA COMPANY LIMITED (B2U85XPU55)` kèm Hardened Runtime và Timestamp.
+  - Ký số ứng dụng và bộ cài đặt DMG bằng chứng chỉ chính thức `Developer ID Application: RELIPA COMPANY LIMITED (B2U85XPU55)` kèm Hardened Runtime và Apple Timestamp.
   - Được Apple Notary Service thẩm định tự động và đóng dấu công chứng (Stapled Ticket), loại bỏ hoàn toàn các cảnh báo Gatekeeper khi mở file lần đầu.
   - Bảo toàn tuyệt đối quyền Trợ năng (Accessibility) không bao giờ bị hỏi lại hay mất quyền sau khi cập nhật.
   - Tái cấu trúc thư mục mã nguồn chuẩn hóa đồng bộ với tên dự án Gox (`Sources/Gox`).
+
+##### Version 1.0.6: (26/09/2026)
 - **Tương thích toàn diện chế độ Roman của bộ gõ CJK & Bàn phím Nhật (JIS)**:
   - Khắc phục lỗi nhận diện sai chế độ Roman / Alphanumeric của các bộ gõ CJK (như `Google Japanese Input - Roman`, `Apple Kotoeri Roman`), cho phép gõ tiếng Việt mượt mà khi bộ gõ đang ở chế độ gõ chữ Latinh (chữ A).
   - Tránh đánh dấu tiếng Việt (`vi`) là ngôn ngữ ngoại lai trong bộ kiểm tra nguồn gõ hệ thống, ngăn chặn việc tự động tắt tiếng Việt khi cài đặt trên máy Mac tiếng Việt.
