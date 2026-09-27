@@ -1,5 +1,12 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.6: (27/09/2026)
+- **Ký mã Apple Developer ID & Công chứng chính thức (Apple Notarization)**:
+  - Ký số ứng dụng và bộ cài đặt DMG bằng chứng chỉ chính thức `Developer ID Application: RELIPA COMPANY LIMITED (B2U85XPU55)` kèm Hardened Runtime và Timestamp.
+  - Được Apple Notary Service thẩm định tự động và đóng dấu công chứng (Stapled Ticket), loại bỏ hoàn toàn các cảnh báo Gatekeeper khi mở file lần đầu.
+  - Bảo toàn tuyệt đối quyền Trợ năng (Accessibility) không bao giờ bị hỏi lại hay mất quyền sau khi cập nhật.
+  - Tái cấu trúc thư mục mã nguồn chuẩn hóa đồng bộ với tên dự án Gox (`Sources/Gox`).
+
 ##### Version 1.0.5: (25/09/2026)
 - **Tự động phục hồi Event Tap & Loại bỏ trễ Hot-Path (Event Tap Recovery & Latency Elimination)**:
   - Tự động phát hiện và kích hoạt lại Event Tap ngay lập tức khi nhận sự kiện `kCGEventTapDisabledByTimeout` hoặc `kCGEventTapDisabledByUserInput`, triệt tiêu hoàn toàn hiện tượng bộ gõ đột nhiên bị mất tác dụng.
