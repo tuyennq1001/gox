@@ -201,8 +201,20 @@ extern "C" {
             NSString *sourceID = (__bridge NSString *)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceID);
             CFArrayRef languages = (CFArrayRef)TISGetInputSourceProperty(currentSource, kTISPropertyInputSourceLanguages);
             
-            BOOL isCJK = NO;
+            BOOL isRomanMode = NO;
             if (sourceID != nil) {
+                if ([sourceID hasSuffix:@".Roman"] ||
+                    [sourceID hasSuffix:@".Alphanumeric"] ||
+                    [sourceID containsString:@"RomajiTyping.Roman"] ||
+                    [sourceID containsString:@".Roman."] ||
+                    [sourceID containsString:@".Alphanumeric."] ||
+                    [sourceID hasSuffix:@".ITABC"]) {
+                    isRomanMode = YES;
+                }
+            }
+            
+            BOOL isCJK = NO;
+            if (sourceID != nil && !isRomanMode) {
                 if ([sourceID containsString:@"Japanese"] ||
                     [sourceID containsString:@"Kotoeri"] ||
                     [sourceID containsString:@"com.google.inputmethod.Japanese"] ||
@@ -220,19 +232,19 @@ extern "C" {
             
             BOOL isNonEnglish = NO;
             if (languages != NULL && CFArrayGetCount(languages) > 0) {
-                BOOL hasEnglish = NO;
+                BOOL hasEnglishOrVietnamese = NO;
                 CFIndex count = CFArrayGetCount(languages);
                 for (CFIndex i = 0; i < count; i++) {
                     NSString *lang = (__bridge NSString *)CFArrayGetValueAtIndex(languages, i);
-                    if ([lang hasPrefix:@"ja"] || [lang hasPrefix:@"zh"] || [lang hasPrefix:@"ko"]) {
+                    if (!isRomanMode && ([lang hasPrefix:@"ja"] || [lang hasPrefix:@"zh"] || [lang hasPrefix:@"ko"])) {
                         isCJK = YES;
                         break;
                     }
-                    if ([lang hasPrefix:@"en"]) {
-                        hasEnglish = YES;
+                    if ([lang hasPrefix:@"en"] || [lang hasPrefix:@"vi"]) {
+                        hasEnglishOrVietnamese = YES;
                     }
                 }
-                if (!hasEnglish) {
+                if (!hasEnglishOrVietnamese) {
                     isNonEnglish = YES;
                 }
             }
