@@ -85,6 +85,22 @@ Khi giải quyết bất kỳ lỗi hoặc phát triển tính năng nào, bắt
 
 ---
 
+## 7. Tiêu chuẩn Chất lượng Kiểm thử (Test Quality Gate)
+- **Kiểm thử hành vi thay vì cài đặt (Behavior vs Implementation)**: Chỉ viết test để bảo vệ **hành vi (Behavior)** và **hợp đồng dữ liệu (Contract)** có thể quan sát được từ bên ngoài; tuyệt đối không test chi tiết cài đặt nội bộ (Implementation).
+- **Bộ 4 câu hỏi bắt buộc (Mandatory 4-Question Gate)**: Khi đề xuất hoặc viết bất kỳ test case nào, AI/Kỹ sư bắt buộc phải giải trình rõ 4 câu hỏi sau trong kế hoạch trước khi code:
+  1. Test này bảo vệ **behavior/contract** nào có thể quan sát được từ bên ngoài?
+  2. **Regression thực tế** (lỗi logic nào) sẽ khiến test này fail?
+  3. Tại sao test suite hiện tại **chưa bắt được** lỗi đó? (Nếu đã có test khác cover ở boundary tương đương hoặc mạnh hơn ➔ **Không thêm**).
+  4. Test có ép buộc thay đổi production code chỉ để phục vụ việc test không? (Nếu có ➔ viết lại test ở public boundary thật, không mở `public` cho hàm `private` hoặc lạm dụng cờ test).
+- **Tuyệt đối cấm các mẫu test rác (Forbidden Test Patterns)**:
+  - **Test vô nghĩa**: Không có assertion thực sự, hoặc chỉ assert những điều hiển nhiên (`assertNotNull`, `assertTrue(true)`).
+  - **Test vòng tròn (Tautological Test)**: Mock data tự trả về kết quả rồi assert chính giá trị của mock mà không qua logic xử lý thực tế.
+  - **Test giòn (Brittle Test)**: Test phụ thuộc sâu vào cấu trúc nội bộ, spy số lần gọi hàm private... khiến test bị vỡ khi refactor code dù hành vi bên ngoài không hề đổi.
+  - **Test thư viện/framework**: Đi kiểm thử lại tính đúng đắn của thư viện bên thứ ba hoặc SDK hệ thống.
+  - **Test trùng lặp**: Tạo thêm unit test cho nhánh logic mà integration test hoặc test cấp cao hơn đã bảo vệ chắc chắn.
+
+---
+
 # ==============================================================================
 # PHẦN 2: QUY TẮC ĐẶC THÙ DỰ ÁN (PROJECT-SPECIFIC RULES: GOX)
 # ==============================================================================
