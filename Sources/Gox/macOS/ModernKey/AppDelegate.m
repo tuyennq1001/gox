@@ -267,6 +267,7 @@ extern bool convertToolDontAlertWhenCompleted;
     
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
+    [theMenu setDelegate:self];
     
     menuInputMethod = [theMenu addItemWithTitle:@"Bật Tiếng Việt"
                                                      action:@selector(onInputMethodSelected)
@@ -306,6 +307,48 @@ extern bool convertToolDontAlertWhenCompleted;
     [statusItem setMenu:theMenu];
     
     [self fillData];
+}
+
+-(void)updateSwitchKeyShortcut {
+    if (!menuInputMethod) {
+        return;
+    }
+    
+    NSEventModifierFlags modifierMask = 0;
+    if (vSwitchKeyStatus & 0x100) {
+        modifierMask |= NSEventModifierFlagControl;
+    }
+    if (vSwitchKeyStatus & 0x200) {
+        modifierMask |= NSEventModifierFlagOption;
+    }
+    if (vSwitchKeyStatus & 0x400) {
+        modifierMask |= NSEventModifierFlagCommand;
+    }
+    if (vSwitchKeyStatus & 0x800) {
+        modifierMask |= NSEventModifierFlagShift;
+    }
+    
+    unsigned short k = ((vSwitchKeyStatus >> 24) & 0xFF);
+    NSString *keyEquivalent = @"";
+    
+    if (k != 0 && k != 0xFE) {
+        if (k == kVK_Space || k == ' ') {
+            keyEquivalent = @" ";
+        } else {
+            keyEquivalent = [[NSString stringWithFormat:@"%c", k] lowercaseString];
+        }
+    } else if (modifierMask != 0) {
+        keyEquivalent = @"\u200B";
+    }
+    
+    [menuInputMethod setKeyEquivalent:keyEquivalent];
+    [menuInputMethod setKeyEquivalentModifierMask:modifierMask];
+}
+
+- (void)menuWillOpen:(NSMenu *)menu {
+    if (menu == theMenu) {
+        [self updateSwitchKeyShortcut];
+    }
 }
 
 -(void)setQuickConvertString {
@@ -352,7 +395,7 @@ extern bool convertToolDontAlertWhenCompleted;
     vFreeMark = 0; [[NSUserDefaults standardUserDefaults] setInteger:vFreeMark forKey:@"FreeMark"];
     vCheckSpelling = 1; [[NSUserDefaults standardUserDefaults] setInteger:vCheckSpelling forKey:@"Spelling"];
     vCodeTable = 0; [[NSUserDefaults standardUserDefaults] setInteger:vCodeTable forKey:@"CodeTable"];
-    vSwitchKeyStatus = DEFAULT_SWITCH_STATUS; [[NSUserDefaults standardUserDefaults] setInteger:vCodeTable forKey:@"SwitchKeyStatus"];
+    vSwitchKeyStatus = DEFAULT_SWITCH_STATUS; [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
     vQuickTelex = 0; [[NSUserDefaults standardUserDefaults] setInteger:vQuickTelex forKey:@"QuickTelex"];
     vUseModernOrthography = 0; [[NSUserDefaults standardUserDefaults] setInteger:vUseModernOrthography forKey:@"ModernOrthography"];
     vRestoreIfWrongSpelling = 0; [[NSUserDefaults standardUserDefaults] setInteger:vRestoreIfWrongSpelling forKey:@"RestoreIfInvalidWord"];
@@ -464,6 +507,7 @@ extern bool convertToolDontAlertWhenCompleted;
     vSwitchKeyStatus = (int)intSwitchKeyStatus;
     if (vSwitchKeyStatus == 0)
         vSwitchKeyStatus = DEFAULT_SWITCH_STATUS;
+    [self updateSwitchKeyShortcut];
     
     NSInteger intCode = [[NSUserDefaults standardUserDefaults] integerForKey:@"CodeTable"];
     [mnuUnicode setState:NSControlStateValueOff];

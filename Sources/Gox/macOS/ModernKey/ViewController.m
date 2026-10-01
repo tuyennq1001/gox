@@ -244,6 +244,7 @@ extern void updateInputSourceState(void);
     vSwitchKeyStatus &= (~0x100);
     vSwitchKeyStatus |= val << 8;
     [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
+    [appDelegate updateSwitchKeyShortcut];
 }
 
 - (IBAction)onOptionSwitchKey:(NSButton *)sender {
@@ -251,6 +252,7 @@ extern void updateInputSourceState(void);
     vSwitchKeyStatus &= (~0x200);
     vSwitchKeyStatus |= val << 9;
     [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
+    [appDelegate updateSwitchKeyShortcut];
 }
 
 - (IBAction)onCommandSwitchKey:(NSButton *)sender {
@@ -258,6 +260,7 @@ extern void updateInputSourceState(void);
     vSwitchKeyStatus &= (~0x400);
     vSwitchKeyStatus |= val << 10;
     [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
+    [appDelegate updateSwitchKeyShortcut];
 }
 
 - (IBAction)onShiftSwitchKey:(NSButton *)sender {
@@ -265,6 +268,7 @@ extern void updateInputSourceState(void);
     vSwitchKeyStatus &= (~0x800);
     vSwitchKeyStatus |= val << 11;
     [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
+    [appDelegate updateSwitchKeyShortcut];
 }
 
 -(void)onMyTextFieldKeyChange:(unsigned short)keyCode character:(unsigned short)character {
@@ -273,6 +277,7 @@ extern void updateInputSourceState(void);
     vSwitchKeyStatus &= 0x00FFFFFF;
     vSwitchKeyStatus |= ((unsigned int)character<<24);
     [[NSUserDefaults standardUserDefaults] setInteger:vSwitchKeyStatus forKey:@"SwitchKeyStatus"];
+    [appDelegate updateSwitchKeyShortcut];
 }
 
 - (IBAction)onBeepSound:(NSButton *)sender {

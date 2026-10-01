@@ -12,7 +12,7 @@
 #define GOX_BUNDLE @"com.tuyennq1001.gox"
 #define OPENKEY_BUNDLE GOX_BUNDLE
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate>
 
 -(void)onImputMethodChanged:(BOOL)willNotify;
 -(void)onInputMethodSelected;
@@ -30,6 +30,7 @@
 -(void)onMacroSelected;
 -(void)onQuickConvert;
 -(void)setQuickConvertString;
+-(void)updateSwitchKeyShortcut;
 
 -(void)showIconOnDock:(BOOL)val;
 

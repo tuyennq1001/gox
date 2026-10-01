@@ -1,5 +1,11 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.8: (01/10/2026)
+- **Hiển thị phím tắt chuyển chế độ gõ trên thanh Menu Bar**:
+  - Hiển thị trực quan tổ hợp phím tắt (mặc định `⌥Z`, hoặc phím tắt người dùng cấu hình như `⌃Space`, `⌥⇧Z`...) căn phải cạnh dòng "Bật Tiếng Việt" tương tự như `⌘Q` của dòng "Thoát".
+  - Tự động đồng bộ hóa hiển thị tức thì khi người dùng thay đổi phím tắt trong Bảng điều khiển.
+  - Sửa lỗi lưu cấu hình `SwitchKeyStatus` khi khôi phục thiết lập mặc định.
+
 ##### Version 1.0.7: (27/09/2026)
 - **Ký mã Apple Developer ID & Công chứng chính thức (Apple Notarization)**:
   - Ký số ứng dụng và bộ cài đặt DMG bằng chứng chỉ chính thức `Developer ID Application: RELIPA COMPANY LIMITED (B2U85XPU55)` kèm Hardened Runtime và Apple Timestamp.
