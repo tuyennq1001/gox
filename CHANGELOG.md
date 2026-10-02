@@ -1,5 +1,11 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.9: (02/10/2026)
+- **Tối ưu trải nghiệm cấp quyền Trợ năng (Accessibility) 1 Popup duy nhất**:
+  - Loại bỏ hộp thoại cảnh báo trùng lặp khi khởi động ứng dụng lần đầu, chỉ giữ lại một popup yêu cầu cấp quyền gốc duy nhất từ macOS.
+  - Tự động thăm dò trạng thái cấp quyền ngầm trong nền (`NSRunLoopCommonModes`), tự động kích hoạt bộ gõ ngay khi người dùng bật quyền trong Cài đặt hệ thống mà không cần thao tác thêm.
+  - Ngăn ngừa khởi tạo trùng lặp biểu tượng trạng thái trên thanh Menu Bar (`statusItem`).
+
 ##### Version 1.0.8: (01/10/2026)
 - **Hiển thị phím tắt chuyển chế độ gõ trên thanh Menu Bar**:
   - Hiển thị trực quan tổ hợp phím tắt (mặc định `⌥Z`, hoặc phím tắt người dùng cấu hình như `⌃Space`, `⌥⇧Z`...) căn phải cạnh dòng "Bật Tiếng Việt" tương tự như `⌘Q` của dòng "Thoát".
