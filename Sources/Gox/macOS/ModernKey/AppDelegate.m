@@ -94,6 +94,7 @@ extern bool convertToolDontAlertWhenCompleted;
     
     NSMenuItem* menuUpdateAvailable;
     NSMenuItem* menuUpdateSeparator;
+    NSTimer* accessibilityPollTimer;
 }
 
 -(void)askPermission {
@@ -101,67 +102,40 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 -(void)waitForAccessibilityPermission {
-    [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-    [NSApp activateIgnoringOtherApps:YES];
-    
     MJAccessibilityOpenPanel();
     
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:@"Gox cần quyền Trợ năng (Accessibility)"];
-    [alert setInformativeText:@"1. Bật công tắc của Gox trong Cài đặt hệ thống > Trợ năng (Accessibility).\n2. Nếu đã có Gox trong danh sách, hãy gạt tắt rồi bật lại (hoặc bấm dấu '-' xoá đi và thêm lại).\n\nỨng dụng sẽ tự động kích hoạt ngay sau khi bạn cấp quyền!"];
-    [alert addButtonWithTitle:@"Mở Cài đặt Trợ năng"];
-    [alert addButtonWithTitle:@"Thoát"];
-    
-    [alert.window makeKeyAndOrderFront:nil];
-    [alert.window setLevel:NSStatusWindowLevel];
-    
-    __block NSTimer *timer = nil;
-    timer = [NSTimer timerWithTimeInterval:0.8 repeats:YES block:^(NSTimer * _Nonnull t) {
-        if (MJAccessibilityIsEnabled()) {
-            [t invalidate];
-            timer = nil;
-            NSLog(@"[Gox] Accessibility permission granted dynamically!");
-            [NSApp abortModal];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
-                if (!vShowIconOnDock) {
-                    [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
-                }
-                [self setupGox];
-            });
-        }
-    }];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    NSModalResponse res = [alert runModal];
-    if (timer) {
-        [timer invalidate];
-        timer = nil;
+    if (accessibilityPollTimer == nil) {
+        accessibilityPollTimer = [NSTimer scheduledTimerWithTimeInterval:0.8
+                                                                  target:self
+                                                                selector:@selector(pollAccessibilityPermission:)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:accessibilityPollTimer forMode:NSRunLoopCommonModes];
     }
-    
+}
+
+-(void)pollAccessibilityPermission:(NSTimer *)timer {
     if (MJAccessibilityIsEnabled()) {
-        vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
-        if (!vShowIconOnDock) {
-            [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
-        }
-        [self setupGox];
-        return;
-    }
-    
-    if (res == NSAlertFirstButtonReturn) {
-        MJAccessibilityOpenPanel();
-        [self waitForAccessibilityPermission];
-    } else {
-        [NSApp terminate:0];
+        [accessibilityPollTimer invalidate];
+        accessibilityPollTimer = nil;
+        NSLog(@"[Gox] Accessibility permission granted dynamically!");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupGox];
+        });
     }
 }
 
 - (void)setupGox {
+    if (statusItem != nil) {
+        return;
+    }
     NSLog(@"[Gox] Accessibility is enabled! Proceeding to setup.");
     
     vShowIconOnDock = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"vShowIconOnDock"];
     if (vShowIconOnDock)
         [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+    else
+        [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
     
     if (vSwitchKeyStatus & 0x8000)
         NSBeep();
@@ -247,11 +221,19 @@ extern bool convertToolDontAlertWhenCompleted;
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag {
+    if (!MJAccessibilityIsEnabled()) {
+        [self waitForAccessibilityPermission];
+        return YES;
+    }
     [self onControlPanelSelected];
     return YES;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
+    if (accessibilityPollTimer != nil) {
+        [accessibilityPollTimer invalidate];
+        accessibilityPollTimer = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     CFNotificationCenterRemoveObserver(CFNotificationCenterGetDistributedCenter(),
                                        (__bridge const void *)(self),
