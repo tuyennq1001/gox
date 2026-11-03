@@ -88,29 +88,29 @@ END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 287, 157
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Giới thiệu OpenKey"
+CAPTION "Giới thiệu Gox"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDI_APP_ICON,IDC_STATIC,14,17,20,20
-    LTEXT           "OpenKey",IDC_STATIC_APP_TITLE,45,14,206,33,SS_NOPREFIX
-    LTEXT           "Bộ gõ Tiếng Việt nguồn mở đa nền tảng",IDC_STATIC_APP_SUB_TITLE,45,40,215,12
+    LTEXT           "Gox",IDC_STATIC_APP_TITLE,45,14,206,33,SS_NOPREFIX
+    LTEXT           "Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ",IDC_STATIC_APP_SUB_TITLE,45,40,240,12
     LTEXT           "Phien ban",IDC_STATIC_APP_VERSION,45,52,227,8
-    CONTROL         "<a>https://github.com/tuyenvm/OpenKey</a>",IDC_SYSLINK_HOME_PAGE,
+    CONTROL         "<a>https://github.com/tuyennq1001/gox</a>",IDC_SYSLINK_HOME_PAGE,
                     "SysLink",WS_TABSTOP,105,79,152,10
     LTEXT           "Trang chủ:",IDC_STATIC_APP_SUB_TITLE2,45,79,47,8
     LTEXT           "Phiên bản mới:",IDC_STATIC_APP_SUB_TITLE3,45,91,58,8
-    LTEXT           "Fanpage:",IDC_STATIC_APP_SUB_TITLE4,45,103,47,8
-    CONTROL         "<a>https://github.com/tuyenvm/OpenKey/releases</a>",IDC_SYSLINK_NEW_VERSION,
+    LTEXT           "GitHub:",IDC_STATIC_APP_SUB_TITLE4,45,103,47,8
+    CONTROL         "<a>https://github.com/tuyennq1001/gox/releases</a>",IDC_SYSLINK_NEW_VERSION,
                     "SysLink",WS_TABSTOP,105,91,175,10
-    CONTROL         "<a>https://www.facebook.com/OpenKeyVN</a>",IDC_SYSLINK_FANPAGE,
+    CONTROL         "<a>https://github.com/tuyennq1001/gox</a>",IDC_SYSLINK_FANPAGE,
                     "SysLink",WS_TABSTOP,105,104,175,10
-    CTEXT           "Mai Vũ Tuyên © 2019",IDC_STATIC_APP_SUB_TITLE5,80,142,130,8
+    CTEXT           "Terry Nguyen © 2026",IDC_STATIC_APP_SUB_TITLE5,80,142,130,8
     PUSHBUTTON      "Kiểm tra bản mới...",IDC_BUTTON_CHECK_VERSION,44,117,75,14
 END
 
 IDD_DIALOG_MAIN DIALOGEX 0, 0, 297, 261
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "OpenKey 1.4 - Bộ gõ Tiếng Việt"
+CAPTION "Gox - Bộ gõ Tiếng Việt & Tiếng Nhật song hành"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     PUSHBUTTON      "Cài đặt gốc",ID_BTN_DEFAULT,113,234,71,20
@@ -130,7 +130,7 @@ BEGIN
     CONTROL         "Tiếng Việt",IDC_RADIO_METHOD_VIETNAMESE,"Button",BS_AUTORADIOBUTTON,64,59,47,10
     CONTROL         "Tiếng Anh",IDC_RADIO_METHOD_ENGLISH,"Button",BS_AUTORADIOBUTTON,158,59,48,10
     DEFPUSHBUTTON   "Đóng",IDBUTTON_OK,200,234,71,20
-    PUSHBUTTON      "Tắt OpenKey",IDBUTTON_EXIT,26,234,71,20
+    PUSHBUTTON      "Tắt Gox",IDBUTTON_EXIT,26,234,71,20
     CONTROL         "",IDC_TAB_CONTROL,"SysTabControl32",TCS_FIXEDWIDTH,7,89,283,140
 END
 
@@ -269,15 +269,15 @@ EXSTYLE WS_EX_TRANSPARENT
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDI_APP_ICON,IDC_STATIC,10,13,20,20
-    LTEXT           "OpenKey - Bộ gõ Tiếng Việt nguồn mở đa nền tảng",IDC_STATIC_APP_TITLE,39,9,206,8,SS_NOPREFIX
+    LTEXT           "Gox - Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ",IDC_STATIC_APP_TITLE,39,9,240,8,SS_NOPREFIX
     LTEXT           "Trang chủ",IDC_STATIC_APP_TITLE2,39,19,37,8,SS_NOPREFIX
-    CONTROL         "<a>https://open-key.org</a>",IDC_SYSLINK_HOME_PAGE,
-                    "SysLink",WS_TABSTOP,81,19,101,10
-    LTEXT           "Facebook",IDC_STATIC_APP_TITLE3,39,29,37,8,SS_NOPREFIX
-    CONTROL         "<a>https://www.facebook.com/OpenKeyVN</a>",IDC_SYSLINK_FANPAGE,
+    CONTROL         "<a>https://github.com/tuyennq1001/gox</a>",IDC_SYSLINK_HOME_PAGE,
+                    "SysLink",WS_TABSTOP,81,19,150,10
+    LTEXT           "GitHub",IDC_STATIC_APP_TITLE3,39,29,37,8,SS_NOPREFIX
+    CONTROL         "<a>https://github.com/tuyennq1001/gox</a>",IDC_SYSLINK_FANPAGE,
                     "SysLink",WS_TABSTOP,81,29,184,10
-    LTEXT           "OpenKey cho Windows là phần mềm mã nguồn mở và được phát hành miễn phí. Bạn hoàn toàn có thể đóng góp ý kiến, yêu cầu tính năng mới qua email của tác giả hoặc trên github.",IDC_STATIC_APP_SUB_TITLE5,39,61,234,28
-    LTEXT           "Mai Vũ Tuyên © 2019 - ",IDC_STATIC_APP_SUB_TITLE6,39,94,78,8
+    LTEXT           "Gox cho Windows là phần mềm mã nguồn mở và được phát hành miễn phí, tối ưu hoàn hảo cho việc gõ song ngữ Việt - Nhật.",IDC_STATIC_APP_SUB_TITLE5,39,61,234,28
+    LTEXT           "Terry Nguyen © 2026 - ",IDC_STATIC_APP_SUB_TITLE6,39,94,78,8
     CONTROL         "<a>maivutuyen.91@gmail.com</a>",IDC_SYSLINK_AUTHOR_EMAIL,
                     "SysLink",WS_TABSTOP,117,94,101,10
     LTEXT           "Phien ban",IDC_STATIC_APP_VERSION_INFO,39,50,227,8
@@ -421,13 +421,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "The OpenKey Project"
-            VALUE "FileDescription", "OpenKey - Bộ gõ Tiếng Việt nguồn mở"
+            VALUE "CompanyName", "The Gox Project"
+            VALUE "FileDescription", "Gox - Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ"
             VALUE "FileVersion", "2.0.5.0"
-            VALUE "InternalName", "OpenKey.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2019 - Mai Vũ Tuyên"
-            VALUE "OriginalFilename", "OpenKey.exe"
-            VALUE "ProductName", "OpenKey"
+            VALUE "InternalName", "Gox.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2026 - Terry Nguyen & Contributors"
+            VALUE "OriginalFilename", "Gox.exe"
+            VALUE "ProductName", "Gox"
             VALUE "ProductVersion", "2.0.5.0"
         END
     END
@@ -445,12 +445,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_APP_TITLE           "OpenKey"
+    IDS_APP_TITLE           "Gox"
     IDS_TRAY_TITLE          "Bấm vào đây để bật gõ Tiếng Việt"
     IDS_TRAY_TITLE_2        "Bấm vào đây để tắt gõ Tiếng Việt"
     IDS_STRING_CONVERT_COMPLETED 
                             "Chuyển mã thành công!\nKết quả đã được lưu trong Clipboard!"
-    IDS_MAIN_DIALOG_TITLE   "OpenKey %s - Bộ gõ Tiếng Việt"
+    IDS_MAIN_DIALOG_TITLE   "Gox %s - Bộ gõ Tiếng Việt & Tiếng Nhật"
     IDS_STRING_MODERN_ORTHORGRAPHY "Bor d"
     IDC_OPENKEY             "OPENKEY"
     IDS_STRING_MORDEN_ORTHORGRAPHY 
