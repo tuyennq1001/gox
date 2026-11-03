@@ -630,6 +630,7 @@ static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *obs
 }
 
 -(void)inputSourceChanged:(NSNotification *)notification {
+    RequestNewSession();
     updateInputSourceState();
 }
 
@@ -649,6 +650,9 @@ static void onCarbonInputSourceChanged(CFNotificationCenterRef center, void *obs
 }
 
 -(void)activeAppChanged: (NSNotification*)note {
+    if ([OpenKeyManager isInited]) {
+        RequestNewSession();
+    }
     updateInputSourceState();
     if (vUseSmartSwitchKey && [OpenKeyManager isInited]) {
         OnActiveAppChanged();

@@ -746,6 +746,15 @@ extern "C" {
         _flag = CGEventGetFlags(event);
         _keycode = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
         
+        // Handle Japanese JIS layout Eisu (102) and Kana (104) input mode keys
+        if (_keycode == 102 || _keycode == 104) {
+            if (type == kCGEventKeyDown) {
+                RequestNewSession();
+                updateInputSourceState();
+            }
+            return event;
+        }
+        
         // Handle Japanese JIS layout:
         // Keycode 33 is physically '@' (never '[').
         // Keycode 30 is physically '[' (mapped to KEY_LEFT_BRACKET = 33).

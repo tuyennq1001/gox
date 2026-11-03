@@ -75,4 +75,12 @@
 #define KEY_COMMA                               43
 #define KEY_SLASH                               44
 
+#define KEY_JIS_EISU                            102
+#define KEY_JIS_KANA                            104
+#define KEY_HOME                                115
+#define KEY_PAGE_UP                             116
+#define KEY_FORWARD_DELETE                      117
+#define KEY_END                                 119
+#define KEY_PAGE_DOWN                           121
+
 #endif //OPENKEY_MAC_H
