@@ -1,5 +1,12 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.10: (03/11/2026)
+- **Khắc phục triệt để lỗi không gõ được tiếng Việt khi chuyển app & bàn phím Nhật (JIS Layout)**:
+  - Bắt và nhận diện chuẩn xác phím `英数` (Eisu - 102) và `かな` (Kana - 104) trên bàn phím JIS, tự động làm sạch bộ đệm qua `RequestNewSession()` và cập nhật nguồn đầu vào ngay lập tức.
+  - Ngăn chặn triệt để việc nhét mã phím `102` vào đầu bộ đệm từ gây kích hoạt cờ lỗi chính tả và làm trôi chữ thô (`khacsh`, `seeps`, `neeus`, `vaayj`).
+  - Bổ sung các phím điều hướng hệ thống (`Home`, `End`, `PageUp`, `PageDown`, `ForwardDelete`) vào danh sách phím ngắt từ trong Engine C++.
+  - Tự động làm sạch bộ đệm gõ phím khi hệ điều hành phát tín hiệu thay đổi nguồn đầu vào (`inputSourceChanged:`).
+
 ##### Version 1.0.9: (02/10/2026)
 - **Tối ưu trải nghiệm cấp quyền Trợ năng (Accessibility) 1 Popup duy nhất**:
   - Loại bỏ hộp thoại cảnh báo trùng lặp khi khởi động ứng dụng lần đầu, chỉ giữ lại một popup yêu cầu cấp quyền gốc duy nhất từ macOS.
