@@ -711,9 +711,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cOa-h2-TPT">
-                                <rect key="frame" x="160" y="210" width="263" height="21"/>
+                                <rect key="frame" x="160" y="210" width="400" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Bộ gõ Tiếng Việt dành cho macOS" id="yWO-xd-t3K">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Gõ Tiếng Việt &amp; Tiếng Nhật song hành không độ trễ" id="yWO-xd-t3K">
                                     <font key="font" metaFont="systemThin" size="17"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1531,9 +1531,9 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rpD-yE-eVi">
-                                            <rect key="frame" x="78" y="169" width="394" height="20"/>
+                                            <rect key="frame" x="78" y="169" width="430" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Gox - Bộ gõ Tiếng Việt dành cho macOS" id="ITy-e9-YzB">
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Gox — Gõ Tiếng Việt &amp; Tiếng Nhật song hành không độ trễ" id="ITy-e9-YzB">
                                                 <font key="font" size="13" name="HelveticaNeue"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1608,7 +1608,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" alignment="left" id="B3Z-2e-1t0">
                                                 <font key="font" metaFont="systemThin" size="13"/>
-                                                <string key="title">Gox cho macOS là phần mềm mã nguồn mở và được phát hành miễn phí. Bạn hoàn toàn có thể đóng góp ý kiến, yêu cầu tính năng mới trên GitHub.</string>
+                                                <string key="title">Gox là phần mềm mã nguồn mở và được phát hành miễn phí, tối ưu hoàn hảo cho việc gõ song ngữ Việt - Nhật. Bạn hoàn toàn có thể đóng góp ý kiến, yêu cầu tính năng mới trên GitHub.</string>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>

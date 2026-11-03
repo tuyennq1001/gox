@@ -482,8 +482,8 @@
 /* Class = "NSMenuItem"; title = "Telex"; ObjectID = "y7i-dK-uIA"; */
 "y7i-dK-uIA.title" = "Telex";
 
-/* Class = "NSTextFieldCell"; title = "Bộ gõ Tiếng Việt dành cho macOS"; ObjectID = "yWO-xd-t3K"; */
-"yWO-xd-t3K.title" = "Bộ gõ Tiếng Việt dành cho macOS";
+/* Class = "NSTextFieldCell"; title = "Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ"; ObjectID = "yWO-xd-t3K"; */
+"yWO-xd-t3K.title" = "Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ";
 
 /* Class = "NSMenuItem"; title = "Show Substitutions"; ObjectID = "z6F-FW-3nz"; */
 "z6F-FW-3nz.title" = "Show Substitutions";

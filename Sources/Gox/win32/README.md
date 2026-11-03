@@ -1,77 +1,47 @@
-# OpenKey for Windows
-[![GitHub release](https://img.shields.io/github/v/release/tuyenvm/OpenKey.svg)](https://github.com/tuyenvm/OpenKey/releases/latest)
-- OpenKey phiên bản cho Windows bắt đầu từ bản 1.5, có tất cả các tính năng của bản macOS.  
-- OpenKey mặc định chạy ở chế độ `Administrator` để có thể dễ dàng gõ Tiếng Việt trong **game**. Mã nguồn đã được phát hành công khai dưới giấy phép **GPL** nên các bạn hoàn toàn yên tâm về tính minh bạch của chương trình, không keylog, không backdoor,...
-- OpenKey for Windows hỗ trợ từ Windows Vista trở lên, Windows XP thì chưa có cơ hội để test, Windows 2000 trở về trước thì chắc chắn không thể hỗ trợ rồi.
-![Giao diện chính](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/win32_2.0_1.png "Main UI")
+# Gox for Windows
+[![GitHub release](https://img.shields.io/github/v/release/tuyennq1001/gox.svg?color=blue)](https://github.com/tuyennq1001/gox/releases/latest)
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://github.com/tuyennq1001/gox/blob/master/LICENSE)
 
+**Gox for Windows** — Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ. Phiên bản dành cho Windows thừa hưởng trọn vẹn lõi thuật toán C++ tối ưu, tương thích hoàn hảo với bộ gõ tiếng Nhật của hệ điều hành (Microsoft Japanese IME) và bộ gõ tiếng Việt.
 
+---
 
-## Tính năng
-Mặc định, OpenKey cho phép gõ với chế độ bỏ dấu tự do, không cần phải bỏ dấu sau nguyên âm.
-* Hỗ trợ kiểu gõ:
-	* Telex
-	* VNI
-	* Simple Telex
-	* Có thể yêu cầu thêm kiểu gõ.
-* Hỗ trợ bảng mã:
-	* Unicode dựng sẵn
-	* TCVN3 (ABC)
-	* VNI Windows
-	* Unicode Tổ hợp
-	* Vietnamese locale CP 1258
-* Chính tả:
-	* Bật tắt kiểm tra chính tả
-	* Tự khôi phục phím với từ sai
-	* Cho phép chữ "z w j f" làm phụ âm đầu
-	* Tạm tắt chính tả bằng phím Ctrl
-	* Tạm tắt OpenKey bằng phím Alt
-* Tùy chọn:
-	* Tự cấu hình phím tắt chuyển Anh - Việt
-	* Bỏ dấu kiểu mới (oà, uý) và kiểu cũ (òa úy)
-	* Sửa lỗi gợi ý trên thanh địa chỉ trình duyệt, Excel
-	* Hiện bảng điều khiển khi khởi động
-	* Hai loại biểu tượng trên system tray (đồng bộ với Win10)
-	* Khởi động cùng Windows.
-	* Chạy với chế độ Admin.
-	* Sửa lỗi trên các trình duyệt Chromium
-	* Hỗ trợ các ứng dụng metro trên Windows 10
-* Công cụ và tính năng nâng cao:
-	* Loại trừ ứng dụng thông minh
-	* Tự ghi nhớ bảng mã theo ứng dụng
-	* Viết Hoa chữ cái đầu câu
-	* Gõ nhanh (cc=ch, gg=gi, kk=kh, nn=ng, qq=qu, pp=ph, tt=th)
-	* Gõ tắt và công cụ soạn gõ tắt.
-	* Chuyển mã với nhiều tùy chọn.
-	* Gõ tắt phụ âm đầu: f->ph, j->gi, w->qu
-	* Gõ tắt phụ âm cuối: g->ng, h->nh, k->ch
+## Điểm nổi bật trên Windows
+* 🇯🇵 **Tự động Bypass khi gõ Tiếng Nhật**: Tích hợp cơ chế kiểm tra trạng thái IME (`ImmGetDefaultIMEWnd` + `IMC_GETOPENSTATUS`). Khi bạn mở IME tiếng Nhật, Gox tự động nhả phím nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji ➔ Hiragana/Kanji.
+* 🎮 **Hỗ trợ gõ trong Game & Đồ họa**: Chạy với quyền `Administrator` giúp gõ tiếng Việt mượt mà trong các tựa game (LMHT, Valorant, Dota...) và phần mềm kỹ thuật (Photoshop, AutoCAD...).
+* 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi bất kỳ dữ liệu nào ra Internet.
+* 🚀 **Hiệu năng cao**: Hot-path xử lý phím bấm Win32 Hook được tối ưu triệt để, không gây giật lag chuột hay delay phím bấm.
 
-## Cài đặt
-- Vào [đây](https://github.com/tuyenvm/OpenKey/releases/latest) tải file `.zip` phiên bản mới nhất về máy, giải nén vào nơi bất kỳ.
-- Nhấp đúp vô `OpenKey.exe` để chạy chương trình.
-- Lưu ý, khi chạy chương trình lần đầu, Windows sẽ mở một hộp thoại để hỏi bạn, bấm `yes` để đồng ý OpenKey chạy với quyền `admin`
-- Xong rồi một biểu tượng chữ `V` sẽ hiện trên system tray, đúp click vô đó để mở bảng điều khiển, cấu hình những thứ bạn cần.
-- Xong.
-## Một số hình ảnh khác
-![Menu](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/win32_5.png "Menu")
-![Bảng gõ tắt](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/win32_2.png "Macro table")
-![Công cụ chuyển mã](https://raw.githubusercontent.com/tuyenvm/tuyenvm.github.io/master/images/win32_3.png "Convert tool")
+---
 
-## Thông tin
-- Dự án OpenKey ra đời vào ngày 18/01/2019. OpenKey được viết lại hoàn toàn mới bởi tác giả Mai Vũ Tuyên. Mục đích ra đời của OpenKey là để khắc phục lỗi gạch chân khó chịu do cơ chế `preedit` gây ra trên hệ điều hành macOS
-- Phiên bản đầu tiên cho hệ điều hành macOS được phát hành trên Github vào ngày 01/02/2019  
-Trải qua nhiều lần cập nhật và phát triển, ngày 31/07/2019, OpenKey cho macOS được mọi người biết đến qua trang tinhte.vn  
-- Với nhiều ý kiến đóng góp từ cộng đồng, OpenKey cho macOS phát triển tới phiên bản 1.5 đã đầy đủ các tính năng của một bộ gõ chuẩn, tiện lợi.  
-- Ngày 19/09/2019 tác giả đã "port" OpenKey cho hệ điều hành Windows, phát triển song song với phiên bản cho macOS.  
-- Phiên bản OpenKey cho Linux vẫn đang âm thầm phát triển, vì Linux có hệ thống GUI phức tạp, API "lạ" nên đòi hỏi thời gian nhiều hơn cho việc phát triển.
+## Tính năng chính
+* **Kiểu gõ**: Telex, VNI, Simple Telex 1 & 2.
+* **Bảng mã**: Unicode dựng sẵn, Unicode tổ hợp, TCVN3 (ABC), VNI Windows, Vietnamese Locale CP 1258.
+* **Chính tả thông minh**: Bật/tắt kiểm tra chính tả, tự khôi phục từ sai, cho phép phụ âm đầu `z w j f`.
+* **Phím tắt chuyển đổi**: Tự do cấu hình phím tắt chuyển Anh - Việt (`Ctrl + Shift`, `Alt + Z`...).
+* **Ghi nhớ thông minh theo ứng dụng**: Tự động chuyển bảng mã và chế độ gõ tương ứng với từng phần mềm.
+* **Gõ tắt & Chuyển mã Clipboard**: Hỗ trợ danh sách Macro không giới hạn và công cụ chuyển mã cực nhanh.
 
-## Mã nguồn
-- Mã nguồn cho Windows được build thành công với Microsoft Visual Studio 2017.
-## Giấy phép
-OpenKey for Windows được phát hành dưới giấy phép GPL, điều này nghĩa là bạn hoàn toàn có thể tự do tải mã nguồn về chỉnh sửa, cải tiến theo mục đích của bạn. Nếu bạn tái phân phối bản cải tiến của bạn, bạn **phải** công bố mã nguồn và credit OpenKey bản gốc.
+---
 
-## Một điều nữa
-Đừng quên ủng hộ tác giả bằng cách mua ly cafe cho tác giả tỉnh ngủ nhé: [Gửi cafe](https://paypal.me/tuyenmai)  
-Hoặc trực tiếp qua ví momo:   
-![Donate by momo](https://tuyenvm.github.io/images/momo.png "Momo").   
-Cảm ơn các bạn.
+## Cài đặt & Sử dụng
+1. Tải file `.zip` phiên bản mới nhất từ [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest).
+2. Giải nén vào thư mục bất kỳ trên máy.
+3. Nhấp đúp vào file **`Gox.exe`** để khởi chạy.
+4. Chọn `Yes` khi User Account Control (UAC) hỏi để chạy dưới quyền Administrator (khuyến nghị để gõ tốt trong game).
+5. Biểu tượng chữ `V` sẽ xuất hiện ở System Tray (khay hệ thống). Nhấp đúp vào biểu tượng để mở bảng điều khiển.
+
+---
+
+## Tự Build từ Mã nguồn
+Mã nguồn cho Windows được biên dịch bằng Microsoft Visual Studio 2017 / 2019 / 2022:
+1. Mở file `OpenKey.sln` trong thư mục `Sources/Gox/win32/OpenKey`.
+2. Chọn cấu hình build `Release | x64` (hoặc `Release | Win32`).
+3. Nhấn `Build Solution` (Ctrl + Shift + B).
+
+---
+
+## Ghi nhận & Bản quyền
+* Phát triển và duy trì bởi **Terry Nguyen** ([@tuyennq1001](https://github.com/tuyennq1001)).
+* Kế thừa nền tảng từ dự án OpenKey của tác giả **Mai Vũ Tuyên**.
+* Phát hành theo giấy phép mã nguồn mở **GNU General Public License v3.0**.
