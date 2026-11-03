@@ -33,15 +33,26 @@
 > * **Nỗi đau phổ biến**: Trên macOS và Windows, các bộ gõ tiếng Việt thông thường (EVKey, OpenKey, Unikey, GoTiengViet...) đều bắt phím ngầm và gửi phím Backspace giả lập, làm vỡ bộ đệm tổ hợp Romaji ➔ Hiragana/Kanji của IME tiếng Nhật (Kotoeri, Google Japanese Input, Microsoft Japanese IME). Người dùng luôn phải nhớ chuyển bộ gõ sang Tiếng Anh (E) hoặc tắt hẳn trước khi gõ tiếng Nhật.
 > * **Giải pháp đột phá của Gox**: Gox tự động theo dõi trạng thái bộ gõ của hệ điều hành. Khi bạn chuyển sang Tiếng Nhật, Gox lập tức kích hoạt cơ chế **Bypass nguyên bản** — phím bấm được chuyển thẳng đến IME tiếng Nhật. **Bạn hoàn toàn không cần tắt Gox, không cần chuyển về Tiếng Anh (E), cứ chuyển đổi ngôn ngữ là gõ được ngay.**
 
+> [!TIP]
+> ### ✍️ Loại bỏ lỗi gạch chân khó chịu ở bộ gõ mặc định: Gõ sai không lo phải xóa cả từ!
+> * **Nỗi đau ở bộ gõ mặc định**: Trên macOS, bộ gõ tiếng Việt mặc định của Apple sử dụng cơ chế gạch chân (preedit inline buffer). Khi đang gõ, chữ sẽ bị gạch chân bên dưới; ngay khi bạn bấm dấu cách hoặc di chuyển con trỏ, gạch chân biến mất và từ bị chốt cứng (commit). **Hậu quả là nếu lỡ gõ sai, bạn không thể bấm phím sửa dấu hay sửa từng ký tự lẻ mà bắt buộc phải xóa toàn bộ cả từ để gõ lại từ đầu**, vô cùng ức chế và làm gián đoạn dòng gõ phím.
+> * **Trải nghiệm tự do cùng Gox**: Gox triệt tiêu hoàn toàn gạch chân phiền toái. Bạn có thể thoải mái sửa phím, lùi từ, bỏ dấu tự do mà không bao giờ phải gõ lại nguyên từ. Đồng thời loại bỏ triệt để hiện tượng kẹt phím, nhảy chữ, đúp từ trên thanh địa chỉ trình duyệt (Chrome, Safari Omnibox) và các trình biên soạn mã nguồn (VS Code, Xcode).
+
+> [!NOTE]
+> ### 🛡️ Mã nguồn mở 100% & Zero-Telemetry: Không lo Keylogger như các phần mềm nguồn đóng!
+> * **Mối lo từ bộ gõ nguồn đóng**: Bộ gõ là phần mềm nhạy cảm nhất vì nhận trọn vẹn mọi ký tự bạn gõ trên bàn phím — từ mật khẩu tài khoản, mã PIN ngân hàng, tin nhắn riêng tư đến mã nguồn bảo mật của công ty. Các bộ gõ nguồn đóng tiềm ẩn rủi ro bị cài cắm keylogger ngầm hoặc âm thầm thu thập hành vi người dùng gửi về máy chủ mà không ai kiểm chứng được.
+> * **Cam kết minh bạch tuyệt đối của Gox**: Gox là phần mềm **mã nguồn mở 100% (GPLv3)**, hoạt động **hoàn toàn offline** và cam kết **Zero-Telemetry (không thu thập bất kỳ dữ liệu nào)**. Toàn bộ mã nguồn được công khai trên GitHub, mang lại sự an tâm tuyệt đối cho người dùng cá nhân lẫn các kỹ sư làm việc trong môi trường doanh nghiệp khắt khe về an toàn thông tin.
+
 ---
 
 ### Điểm nổi bật:
 * 🇯🇵 **Dùng song song Tiếng Nhật (Không cần tắt Gox)**: Thoải mái gõ tiếng Nhật (Kotoeri, Google Japanese Input, Microsoft IME...) song song với tiếng Việt 24/7. Tự động nhận diện và bypass phím bấm nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji/Hiragana/Kanji.
+* ✍️ **Xóa bỏ lỗi gạch chân khó chịu**: Khắc phục triệt để nhược điểm của bộ gõ mặc định. Lỡ gõ sai có thể sửa ngay tại chỗ, không bao giờ phải xóa cả từ để gõ lại.
+* 🛡️ **Mã nguồn mở & Không lo Keylogger**: 100% mã nguồn mở minh bạch, hoàn toàn offline, zero telemetry. An toàn tuyệt đối cho mật khẩu và dữ liệu công việc so với các phần mềm nguồn đóng.
+* 💖 **Miễn phí trọn đời & Luôn cập nhật**: Dự án phi lợi nhuận vì cộng đồng, tích hợp tính năng cập nhật 1-click tức thì (In-App Auto-Update), liên tục bảo trì và phát triển bền vững.
 * ⌨️ **Tương thích hoàn hảo Bàn phím chuẩn Nhật (JIS Keyboard)**: Chuyển đổi mượt mà với các phím đặc thù trên bàn phím JIS (`かな` / `英数`) cũng như bàn phím US/quốc tế (`Ctrl + Space`, `Globe/Fn`).
 * 💻 **Hỗ trợ Đa nền tảng (Cross-Platform)**: Trải nghiệm nhất quán trên cả **macOS** và **Windows**, cùng lộ trình tích hợp sâu cho **Linux (Ubuntu/Debian)**.
 * 🚀 **Siêu nhẹ & Hiệu năng cao**: Hot-path xử lý phím bấm được tối ưu triệt để bằng C++, không gây lag con trỏ hay đơ bàn phím.
-* 🛡️ **Zero Telemetry**: Hoạt động hoàn toàn offline, cam kết 100% không ghi log phím bấm và không gửi bất kỳ dữ liệu nào ra ngoài.
-* ✨ **Cập nhật 1-Click tức thì (In-App Auto-Update)**: Tự động kiểm tra bản mới định kỳ ngầm trong nền. Nâng cấp phiên bản mới chỉ với 1 cú click.
 * 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt/Tiếng Anh theo từng ứng dụng (Safari/Browser ↔ Terminal/IDE).
 * 🎯 **Khắc phục lỗi gõ trên Browser**: Tích hợp cơ chế sửa lỗi đúp từ trên Omnibox trình duyệt Chromium, Safari, Edge.
 
@@ -67,12 +78,14 @@
 1. **日本語IMEとの完全な共存（遅延ゼロ・バッファ破損なし）**:
    * 従来のベトナム語入力ソフトでは、日本語入力時にインライン変換バッファ（ローマ字 ➔ ひらがな/漢字）が破壊される問題がありました。
    * Gox はOSの入力ソース状態を自動検出し、日本語（ことえり、Google日本語入力、Microsoft IME）が選択された瞬間に**キーストロークをそのまま通過（Bypass）**させます。ベトナム語入力をオフにする必要は一切ありません。
-2. **JIS配列キーボード完全対応**:
+2. **煩わしい「下線（インライン変換）」を完全排除**:
+   * macOS標準のベトナム語入力のように下線で入力中テキストが固定されることがなく、入力ミス時にも単語全体を消去せずその場で柔軟に修正可能です。
+3. **100% オープンソース＆キーロガーの心配ゼロ（Zero-Telemetry）**:
+   * クローズドソース（ソース非公開）の入力ソフトとは異なり、Goxはソースコードを完全公開（GPLv3）し、完全オフラインで動作します。キーストロークの収集や外部送信は一切行わないため、企業の機密情報やパスワードの入力も極めて安全です。
+4. **JIS配列キーボード完全対応**:
    * 日本語キーボード（JIS）特有の「かな」「英数」キーや、macOSの「Caps Lock / 地球儀キー」での切り替えにスムーズに対応。
-3. **完全オフライン・テレメトリなし（Zero-Telemetry）**:
-   * キー入力のログ保存や外部通信は一切行いません。機密情報を扱う開発現場や企業環境でも安心してご利用いただけます。
-4. **超軽量＆高パフォーマンス**:
-   * C++で極限まで最適化されたコアエンジンにより、タイピングの遅延やカーソルの引っかかりをゼロに抑えています。
+5. **超軽量＆高パフォーマンス＆継続的なアップデート**:
+   * C++で極限まで最適化されたコアエンジンにより、遅延ゼロの高速タイピングを実現。メニューバーからの1クリック自動更新に対応し、常に最新の状態で安心してご利用いただけます。
 
 ---
 
