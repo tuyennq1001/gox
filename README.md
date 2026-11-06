@@ -106,7 +106,7 @@
 ## Cài đặt & Sử dụng
 
 ### 1. Dành cho macOS
-1. Tải file cài đặt `.dmg` bản mới nhất từ [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest).
+1. Tải file cài đặt `.dmg` bản mới nhất: [Tải trực tiếp Gox.dmg](https://github.com/tuyennq1001/gox/releases/latest/download/Gox.dmg) (hoặc xem tại [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest)).
 2. Mở file `.dmg` và kéo biểu tượng **`Gox.app`** vào thư mục **`Applications`**.
 3. **Mở ứng dụng lần đầu (Bỏ qua cảnh báo Gatekeeper)**:
    - Do Gox là phần mềm nguồn mở miễn phí, macOS sẽ yêu cầu xác nhận khi mở lần đầu.
