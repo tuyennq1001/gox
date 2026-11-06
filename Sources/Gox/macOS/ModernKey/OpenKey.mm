@@ -59,7 +59,7 @@ extern "C" {
     NSArray* _unicodeCompoundApp = @[@"com.apple.",
                                      @"com.google.Chrome", @"com.brave.Browser",
                                      @"com.microsoft.edgemac.Dev", @"com.microsoft.edgemac.Beta", @"com.microsoft.Edge.Dev", @"com.microsoft.Edge"];
-    NSArray* _recommendWorkaroundDisabledApp = @[@"com.apple.Spotlight"];
+    NSArray* _recommendWorkaroundDisabledApp = @[@"com.apple.Spotlight", @"com.meta.endo"];
     
     CGEventSourceRef myEventSource = NULL;
     vKeyHookState* pData;
@@ -213,6 +213,11 @@ extern "C" {
                 }
             }
             
+            BOOL isNativeVietnameseIM = NO;
+            if (sourceID != nil && [sourceID hasPrefix:@"com.apple.inputmethod.VietnameseIM"]) {
+                isNativeVietnameseIM = YES;
+            }
+            
             BOOL isCJK = NO;
             if (sourceID != nil && !isRomanMode) {
                 if ([sourceID containsString:@"Japanese"] ||
@@ -249,7 +254,7 @@ extern "C" {
                 }
             }
             
-            BOOL shouldBypass = isCJK || (vOtherLanguage && isNonEnglish);
+            BOOL shouldBypass = isCJK || isNativeVietnameseIM || (vOtherLanguage && isNonEnglish);
             
             if (isNonLatinInputActive != shouldBypass) {
                 isNonLatinInputActive = shouldBypass;
@@ -738,11 +743,6 @@ extern "C" {
             return event;
         }
         
-        // Fast bypass if non-Latin / CJK is active
-        if (isNonLatinInputActive) {
-            return event;
-        }
-        
         _flag = CGEventGetFlags(event);
         _keycode = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
         
@@ -750,8 +750,15 @@ extern "C" {
         if (_keycode == 102 || _keycode == 104) {
             if (type == kCGEventKeyDown) {
                 RequestNewSession();
-                updateInputSourceState();
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+                    updateInputSourceState();
+                });
             }
+            return event;
+        }
+        
+        // Fast bypass if non-Latin / CJK is active
+        if (isNonLatinInputActive) {
             return event;
         }
         
