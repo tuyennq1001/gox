@@ -1,5 +1,13 @@
 # Gox (OpenKey) Change Log
 
+##### Version 1.0.11: (07/11/2026)
+- **Tương thích Meta Muse & Cảnh báo khóa phím Secure Input trực quan**:
+  - Hỗ trợ đầy đủ Meta Muse (`com.meta.endo`), loại bỏ ký tự khoảng trắng không ngắt và chuyển sang chế độ Selection Replacement giúp gõ mượt mà, không giật nhảy hay mất chữ.
+  - Nhận diện chính xác 100% ứng dụng đang khóa bàn phím (Secure Event Input) thông qua Kernel `IORegistry` (`IOConsoleUsers`), loại bỏ nhận diện nhầm các ứng dụng nền.
+  - Cảnh báo trực quan trên Menu Bar: Logo chữ **`V`** nhấp nháy đỏ 3 lần và chuyển sang màu ĐỎ rực khi bị ô mật khẩu khóa phím; chế độ tiếng Anh **`E`** giữ nguyên không nhấp nháy.
+  - Tích hợp tính năng 1-Click: Nhấn vào thông báo trên menu để tự động đưa ứng dụng khóa phím (như Google Chrome) lên trước, giúp thoát ô mật khẩu nhanh chóng.
+  - Xử lý phím JIS (`英数` / `かな`) trước bộ lọc Non-Latin và tự động bypass khi kích hoạt `VietnameseIM` gốc macOS.
+
 ##### Version 1.0.10: (03/11/2026)
 - **Khắc phục triệt để lỗi không gõ được tiếng Việt khi chuyển app & bàn phím Nhật (JIS Layout)**:
   - Bắt và nhận diện chuẩn xác phím `英数` (Eisu - 102) và `かな` (Kana - 104) trên bàn phím JIS, tự động làm sạch bộ đệm qua `RequestNewSession()` và cập nhật nguồn đầu vào ngay lập tức.

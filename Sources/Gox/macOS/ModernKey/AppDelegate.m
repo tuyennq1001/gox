@@ -10,6 +10,7 @@
 #import <Carbon/Carbon.h>
 #import <Cocoa/Cocoa.h>
 #import <ServiceManagement/ServiceManagement.h>
+#import <IOKit/IOKitLib.h>
 #include <libproc.h>
 #include <sys/proc_info.h>
 #import "AppDelegate.h"
@@ -94,7 +95,19 @@ extern bool convertToolDontAlertWhenCompleted;
     
     NSMenuItem* menuUpdateAvailable;
     NSMenuItem* menuUpdateSeparator;
+    NSMenuItem* menuSecureInputWarning;
+    NSMenuItem* menuSecureInputSeparator;
     NSTimer* accessibilityPollTimer;
+    NSTimer* secureInputPollTimer;
+    NSTimeInterval lastSecureInputTime;
+    NSString* lastSecureInputAppName;
+    pid_t lastSecureInputPID;
+    
+    NSImage* redStatusImage;
+    NSTimer* secureInputFlashTimer;
+    int secureInputFlashCount;
+    BOOL secureInputFlashPhase;
+    BOOL wasSecureInputActive;
 }
 
 -(void)askPermission {
@@ -170,6 +183,14 @@ extern bool convertToolDontAlertWhenCompleted;
     
     //initialize input source state
     updateInputSourceState();
+    
+    // periodic secure input watcher (every 1.0s, negligible overhead)
+    secureInputPollTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                            target:self
+                                                          selector:@selector(checkSecureInputPeriodic:)
+                                                          userInfo:nil
+                                                           repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:secureInputPollTimer forMode:NSRunLoopCommonModes];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -234,6 +255,14 @@ extern bool convertToolDontAlertWhenCompleted;
         [accessibilityPollTimer invalidate];
         accessibilityPollTimer = nil;
     }
+    if (secureInputPollTimer != nil) {
+        [secureInputPollTimer invalidate];
+        secureInputPollTimer = nil;
+    }
+    if (secureInputFlashTimer != nil) {
+        [secureInputFlashTimer invalidate];
+        secureInputFlashTimer = nil;
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     CFNotificationCenterRemoveObserver(CFNotificationCenterGetDistributedCenter(),
                                        (__bridge const void *)(self),
@@ -246,6 +275,18 @@ extern bool convertToolDontAlertWhenCompleted;
     statusItem = [statusBar statusItemWithLength:NSVariableStatusItemLength];
     statusItem.button.image = [NSImage imageNamed:@"Status"];
     statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
+    
+    // Pre-create red tinted status image for secure input alert
+    NSImage *statusSrc = [NSImage imageNamed:@"Status"];
+    if (statusSrc) {
+        redStatusImage = [statusSrc copy];
+        [redStatusImage lockFocus];
+        [[NSColor colorWithSRGBRed:0.95 green:0.22 blue:0.22 alpha:1.0] set];
+        NSRect rect = NSMakeRect(0, 0, redStatusImage.size.width, redStatusImage.size.height);
+        NSRectFillUsingOperation(rect, NSCompositingOperationSourceAtop);
+        [redStatusImage unlockFocus];
+        [redStatusImage setTemplate:NO];
+    }
     
     theMenu = [[NSMenu alloc] initWithTitle:@""];
     [theMenu setAutoenablesItems:NO];
@@ -327,9 +368,320 @@ extern bool convertToolDontAlertWhenCompleted;
     [menuInputMethod setKeyEquivalentModifierMask:modifierMask];
 }
 
+extern CFDictionaryRef CGSCopyCurrentSessionDictionary(void);
+
+#ifndef kIOMainPortDefault
+#define kIOMainPortDefault MACH_PORT_NULL
+#endif
+
+static pid_t findSecureInputPIDFromIORegistry(void) {
+    pid_t resultPID = 0;
+    io_registry_entry_t root = IORegistryGetRootEntry(kIOMainPortDefault);
+    if (root == MACH_PORT_NULL) {
+        return 0;
+    }
+    CFTypeRef sessionInfo = IORegistryEntrySearchCFProperty(
+        root,
+        kIOServicePlane,
+        CFSTR("IOConsoleUsers"),
+        kCFAllocatorDefault,
+        kIORegistryIterateRecursively
+    );
+    IOObjectRelease(root);
+    
+    if (sessionInfo) {
+        if (CFGetTypeID(sessionInfo) == CFArrayGetTypeID()) {
+            NSArray *sessions = (__bridge NSArray *)sessionInfo;
+            for (NSDictionary *session in sessions) {
+                if ([session isKindOfClass:[NSDictionary class]]) {
+                    NSNumber *pidNum = session[@"kCGSSessionSecureInputPID"];
+                    if (pidNum && [pidNum isKindOfClass:[NSNumber class]]) {
+                        resultPID = [pidNum intValue];
+                        if (resultPID > 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        CFRelease(sessionInfo);
+    }
+    return resultPID;
+}
+
+static NSString* resolveApplicationNameForPID(pid_t pid) {
+    if (pid <= 0) return nil;
+    NSRunningApplication *app = [NSRunningApplication runningApplicationWithProcessIdentifier:pid];
+    if (app) {
+        NSString *name = app.localizedName;
+        NSString *bundleID = app.bundleIdentifier;
+        if ([bundleID containsString:@"com.google.Chrome"] || [name containsString:@"Chrome"]) {
+            return @"Google Chrome";
+        }
+        if ([bundleID containsString:@"com.apple.Safari"] || [name containsString:@"Safari"]) {
+            return @"Safari";
+        }
+        if ([bundleID containsString:@"company.thebrowser.Browser"] || [name containsString:@"Arc"]) {
+            return @"Arc";
+        }
+        if ([bundleID containsString:@"com.brave.Browser"] || [name containsString:@"Brave"]) {
+            return @"Brave";
+        }
+        if ([bundleID containsString:@"com.microsoft.Edge"] || [name containsString:@"Edge"]) {
+            return @"Microsoft Edge";
+        }
+        if (name.length > 0 && ![name containsString:@"Helper"]) {
+            return name;
+        }
+    }
+    
+    struct proc_bsdinfo proc;
+    if (proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &proc, sizeof(proc)) == sizeof(proc)) {
+        if (proc.pbi_ppid > 1) {
+            NSRunningApplication *parentApp = [NSRunningApplication runningApplicationWithProcessIdentifier:proc.pbi_ppid];
+            if (parentApp) {
+                NSString *pName = parentApp.localizedName;
+                NSString *pBundle = parentApp.bundleIdentifier;
+                if ([pBundle containsString:@"com.google.Chrome"] || [pName containsString:@"Chrome"]) {
+                    return @"Google Chrome";
+                }
+                if (pName.length > 0 && ![pName containsString:@"Helper"]) return pName;
+            }
+        }
+    }
+    
+    return app.localizedName;
+}
+
+- (NSString *)detectSecureInputAppName {
+    NSString *appName = nil;
+    pid_t detectedPID = findSecureInputPIDFromIORegistry();
+    
+    if (detectedPID > 0) {
+        appName = resolveApplicationNameForPID(detectedPID);
+        self->lastSecureInputPID = detectedPID;
+    }
+    
+    if (detectedPID <= 0 || !appName) {
+        CFDictionaryRef dict = CGSCopyCurrentSessionDictionary();
+        if (dict) {
+            NSDictionary *d = (__bridge NSDictionary *)dict;
+            NSNumber *pidNum = d[@"kCGSSessionSecureInputPID"];
+            if (pidNum && [pidNum intValue] > 0) {
+                detectedPID = [pidNum intValue];
+                appName = resolveApplicationNameForPID(detectedPID);
+                self->lastSecureInputPID = detectedPID;
+            }
+            CFRelease(dict);
+        }
+    }
+    
+    // Guarded fallback: ONLY attribute to frontmost application IF it is a known browser or password manager
+    if (appName == nil || [appName containsString:@"Helper"] || [appName hasPrefix:@"PID "]) {
+        NSRunningApplication *front = [[NSWorkspace sharedWorkspace] frontmostApplication];
+        if (front && front.bundleIdentifier.length > 0) {
+            NSString *bId = front.bundleIdentifier.lowercaseString;
+            NSString *lName = front.localizedName.lowercaseString;
+            BOOL isBrowserOrSecurityApp = [bId containsString:@"chrome"] ||
+                                          [bId containsString:@"safari"] ||
+                                          [bId containsString:@"arc"] ||
+                                          [bId containsString:@"brave"] ||
+                                          [bId containsString:@"edge"] ||
+                                          [bId containsString:@"firefox"] ||
+                                          [bId containsString:@"1password"] ||
+                                          [bId containsString:@"bitwarden"] ||
+                                          [bId containsString:@"keepass"] ||
+                                          [lName containsString:@"chrome"] ||
+                                          [lName containsString:@"safari"] ||
+                                          [lName containsString:@"browser"];
+            if (isBrowserOrSecurityApp) {
+                detectedPID = front.processIdentifier;
+                appName = resolveApplicationNameForPID(detectedPID) ?: front.localizedName;
+                self->lastSecureInputPID = detectedPID;
+            }
+        }
+    }
+    
+    if (appName.length > 0) {
+        self->lastSecureInputAppName = appName;
+    }
+    return appName;
+}
+
+- (void)onOpenSecureInputAppSelected:(id)sender {
+    if (self->lastSecureInputPID > 0) {
+        NSRunningApplication *app = [NSRunningApplication runningApplicationWithProcessIdentifier:self->lastSecureInputPID];
+        if (app) {
+            [app activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+            return;
+        }
+    }
+    if (self->lastSecureInputAppName.length > 0) {
+        NSArray *apps = [[NSWorkspace sharedWorkspace] runningApplications];
+        for (NSRunningApplication *app in apps) {
+            if ([app.localizedName isEqualToString:self->lastSecureInputAppName] ||
+                ([self->lastSecureInputAppName isEqualToString:@"Google Chrome"] && [app.bundleIdentifier containsString:@"Chrome"])) {
+                [app activateWithOptions:NSApplicationActivateIgnoringOtherApps];
+                break;
+            }
+        }
+    }
+}
+
+- (void)updateStatusIcon {
+    if (!statusItem) return;
+    NSInteger grayIcon = [[NSUserDefaults standardUserDefaults] integerForKey:@"GrayIcon"];
+    BOOL isSecure = IsSecureEventInputEnabled();
+    
+    if (vLanguage == 1) { // Vietnamese mode
+        if (isSecure) {
+            if (secureInputFlashTimer != nil && secureInputFlashPhase == NO) {
+                // Flash off-phase: display standard icon
+                statusItem.button.image = [NSImage imageNamed:@"Status"];
+                [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
+            } else {
+                // Flash on-phase or solid red
+                statusItem.button.image = redStatusImage ?: [NSImage imageNamed:@"Status"];
+                [statusItem.button.image setTemplate:NO];
+            }
+            statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
+            if (lastSecureInputAppName.length > 0) {
+                statusItem.button.toolTip = [NSString stringWithFormat:@"⚠️ %@ đang khóa phím", lastSecureInputAppName];
+            } else {
+                statusItem.button.toolTip = @"⚠️ Đang bị khóa phím bởi ô mật khẩu";
+            }
+            return;
+        }
+        
+        // Normal V mode
+        statusItem.button.image = [NSImage imageNamed:@"Status"];
+        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
+        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
+        statusItem.button.toolTip = nil;
+    } else { // English mode: never red, never blink
+        statusItem.button.image = [NSImage imageNamed:@"StatusEng"];
+        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
+        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlightedEng"];
+        statusItem.button.toolTip = nil;
+    }
+}
+
+- (void)stopSecureInputFlash {
+    if (secureInputFlashTimer != nil) {
+        [secureInputFlashTimer invalidate];
+        secureInputFlashTimer = nil;
+    }
+    secureInputFlashCount = 0;
+    secureInputFlashPhase = NO;
+}
+
+- (void)onSecureInputFlashTick:(NSTimer *)timer {
+    if (!IsSecureEventInputEnabled() || vLanguage != 1) {
+        [self stopSecureInputFlash];
+        [self updateStatusIcon];
+        return;
+    }
+    
+    secureInputFlashPhase = !secureInputFlashPhase;
+    [self updateStatusIcon];
+    
+    secureInputFlashCount--;
+    if (secureInputFlashCount <= 0) {
+        [self stopSecureInputFlash];
+        [self updateStatusIcon];
+    }
+}
+
+- (void)startSecureInputFlash {
+    [self stopSecureInputFlash];
+    if (vLanguage != 1) return;
+    
+    secureInputFlashCount = 6;
+    secureInputFlashPhase = YES;
+    [self updateStatusIcon];
+    
+    secureInputFlashTimer = [NSTimer scheduledTimerWithTimeInterval:0.35
+                                                             target:self
+                                                           selector:@selector(onSecureInputFlashTick:)
+                                                           userInfo:nil
+                                                            repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:secureInputFlashTimer forMode:NSRunLoopCommonModes];
+}
+
+- (void)checkSecureInputPeriodic:(NSTimer *)timer {
+    BOOL isSecure = IsSecureEventInputEnabled();
+    if (isSecure) {
+        self->lastSecureInputTime = [NSDate timeIntervalSinceReferenceDate];
+        NSString *name = [self detectSecureInputAppName];
+        if (name.length > 0) {
+            self->lastSecureInputAppName = name;
+        }
+        
+        if (!self->wasSecureInputActive) {
+            self->wasSecureInputActive = YES;
+            if (vLanguage == 1) {
+                [self startSecureInputFlash];
+            } else {
+                [self updateStatusIcon];
+            }
+        } else if (self->secureInputFlashTimer == nil) {
+            [self updateStatusIcon];
+        }
+    } else {
+        if (self->wasSecureInputActive) {
+            self->wasSecureInputActive = NO;
+            [self stopSecureInputFlash];
+            [self updateStatusIcon];
+        }
+    }
+}
+
+- (void)updateSecureInputWarning {
+    NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
+    Boolean isSecure = IsSecureEventInputEnabled();
+    BOOL wasRecentlySecure = (now - self->lastSecureInputTime < 4.0);
+    
+    if (isSecure || wasRecentlySecure) {
+        NSString *appName = [self detectSecureInputAppName];
+        if (!appName && wasRecentlySecure) {
+            appName = self->lastSecureInputAppName;
+        }
+        if (!appName) {
+            appName = @"Google Chrome";
+        }
+        
+        NSString *title = [NSString stringWithFormat:@"⚠️ %@ đang khóa phím: Bấm để mở & click ra ngoài ô password", appName];
+        NSString *toolTip = [NSString stringWithFormat:@"macOS tự động khóa bàn phím để bảo vệ mật khẩu trên %@. Bấm vào đây để mở cửa sổ đó, sau đó click chuột ra ngoài ô password để gõ tiếng Việt bình thường.", appName];
+        
+        if (menuSecureInputWarning) {
+            [menuSecureInputWarning setTitle:title];
+            [menuSecureInputWarning setToolTip:toolTip];
+        } else {
+            menuSecureInputWarning = [[NSMenuItem alloc] initWithTitle:title action:@selector(onOpenSecureInputAppSelected:) keyEquivalent:@""];
+            [menuSecureInputWarning setTarget:self];
+            [menuSecureInputWarning setEnabled:YES];
+            [menuSecureInputWarning setToolTip:toolTip];
+            menuSecureInputSeparator = [NSMenuItem separatorItem];
+            
+            [theMenu insertItem:menuSecureInputSeparator atIndex:0];
+            [theMenu insertItem:menuSecureInputWarning atIndex:0];
+        }
+    } else {
+        if (menuSecureInputWarning) {
+            [theMenu removeItem:menuSecureInputWarning];
+            menuSecureInputWarning = nil;
+        }
+        if (menuSecureInputSeparator) {
+            [theMenu removeItem:menuSecureInputSeparator];
+            menuSecureInputSeparator = nil;
+        }
+    }
+}
+
 - (void)menuWillOpen:(NSMenu *)menu {
     if (menu == theMenu) {
         [self updateSwitchKeyShortcut];
+        [self updateSecureInputWarning];
     }
 }
 
@@ -455,19 +807,16 @@ extern bool convertToolDontAlertWhenCompleted;
 - (void) fillData {
     //fill data
     NSInteger intInputMethod = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputMethod"];
-    NSInteger grayIcon = [[NSUserDefaults standardUserDefaults] integerForKey:@"GrayIcon"];
     if (intInputMethod == 1) {
         [menuInputMethod setState:NSControlStateValueOn];
-        statusItem.button.image = [NSImage imageNamed:@"Status"];
-        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
-        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlighted"];
     } else {
         [menuInputMethod setState:NSControlStateValueOff];
-        statusItem.button.image = [NSImage imageNamed:@"StatusEng"];
-        [statusItem.button.image setTemplate:(grayIcon ? YES : NO)];
-        statusItem.button.alternateImage = [NSImage imageNamed:@"StatusHighlightedEng"];
     }
     vLanguage = (int)intInputMethod;
+    if (vLanguage == 0 && secureInputFlashTimer != nil) {
+        [self stopSecureInputFlash];
+    }
+    [self updateStatusIcon];
     
     NSInteger intInputType = [[NSUserDefaults standardUserDefaults] integerForKey:@"InputType"];
     [mnuTelex setState:NSControlStateValueOff];
@@ -509,11 +858,6 @@ extern bool convertToolDontAlertWhenCompleted;
         [mnuVietnameseLocaleCP1258 setState:NSControlStateValueOn];
     }
     vCodeTable = (int)intCode;
-    
-    //
-    NSInteger intRunOnStartup = [[NSUserDefaults standardUserDefaults] integerForKey:@"RunOnStartup"];
-    [self setRunOnStartup:intRunOnStartup ? YES : NO];
-
 }
 
 -(void)onImputMethodChanged:(BOOL)willNotify {
