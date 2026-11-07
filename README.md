@@ -106,6 +106,13 @@
 
 ## Cài đặt & Sử dụng cho macOS
 
+### Cách 1: Cài đặt qua Homebrew (Khuyến nghị cho Developer)
+Cài đặt tức thì chỉ bằng 1 dòng lệnh trên Terminal:
+```bash
+brew install --cask tuyennq1001/tap/gox
+```
+
+### Cách 2: Tải file cài đặt `.dmg`
 1. Tải file cài đặt `.dmg` bản mới nhất: **[Tải trực tiếp Gox.dmg](https://github.com/tuyennq1001/gox/releases/latest/download/Gox.dmg)** (hoặc xem tại [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest)).
 2. Mở file `.dmg` và kéo biểu tượng **`Gox.app`** vào thư mục **`Applications`**.
 3. **Cấp quyền Trợ năng (Accessibility)**:
