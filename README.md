@@ -2,10 +2,10 @@
   <img src="assets/logo.png" alt="Gox Logo" width="130" />
 </p>
 
-<h1 align="center">Gox — Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ</h1>
+<h1 align="center">Gox — Bộ gõ Tiếng Việt Native cho macOS</h1>
 
 <p align="center">
-  <strong>🌟 Bộ gõ Tiếng Việt thế hệ mới đa nền tảng (macOS • Windows • Linux) — Tương thích tuyệt đối với Tiếng Nhật, cứ chuyển là gõ, không cần tắt bộ gõ!</strong>
+  <strong>🌟 Gõ Tiếng Việt & Tiếng Nhật song hành không độ trễ — Tương thích tuyệt đối Bàn phím Nhật JIS (かな / 英数)</strong>
 </p>
 
 <p align="center">
@@ -15,77 +15,78 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-GPLv3-green.svg" alt="License">
   </a>
-  <img src="https://img.shields.io/badge/Platforms-macOS%20%7C%20Windows%20%7C%20Linux-indigo.svg" alt="Platforms">
+  <img src="https://img.shields.io/badge/macOS-12.0%2B%20(Apple%20Silicon%20%26%20Intel)-indigo.svg" alt="macOS 12.0+">
+  <img src="https://img.shields.io/badge/Apple-Notarized-success.svg" alt="Apple Notarized">
   <img src="https://img.shields.io/badge/CJK%20Bypass-Zero--Latency-success.svg" alt="CJK Bypass">
-  <img src="https://img.shields.io/badge/Keyboard-JIS%20Ready-orange.svg" alt="JIS Keyboard Ready">
+  <img src="https://img.shields.io/badge/Keyboard-JIS%20Ready%20(%E3%81%8B%E3%81%AA%2F%E8%8B%B1%E6%95%B0)-orange.svg" alt="JIS Keyboard Ready">
   <img src="https://img.shields.io/badge/Privacy-Zero--Telemetry-blue.svg" alt="Zero Telemetry">
 </p>
 
 ---
 
 ## Giới thiệu
-**Gox** là bộ gõ tiếng Việt hiện đại, mã nguồn mở, đa nền tảng (**macOS • Windows • Linux**), được tối ưu hóa đặc quyền cho các kỹ sư, BrSE, Comtor, lập trình viên và du học sinh làm việc trong môi trường song ngữ **Việt – Nhật**.
+**Gox** là bộ gõ tiếng Việt Native hiện đại, mã nguồn mở, được tối ưu hóa đặc quyền cho **macOS** (tương thích 100% chip Apple Silicon M1/M2/M3/M4 & Intel). Ứng dụng được thiết kế riêng cho các kỹ sư, BrSE, Comtor, lập trình viên và du học sinh làm việc trong môi trường song ngữ **Việt – Nhật** hoặc sử dụng **MacBook bàn phím Nhật (JIS Layout)**.
 
-Được xây dựng với triết lý **tối giản, siêu nhẹ, zero-telemetry**, Gox giải quyết triệt để lỗi gạch chân, kẹt phím, đúp chữ trên các trình duyệt hiện đại (Chrome, Safari, Edge) và hoạt động mượt mà trong môi trường phát triển (VS Code, Xcode, Terminal, JetBrains).
+Được xây dựng với triết lý **tối giản, siêu nhẹ, zero-telemetry**, Gox giải quyết triệt để lỗi gạch chân, kẹt phím, đúp chữ trên các trình duyệt hiện đại (Chrome, Safari, Edge) và hoạt động mượt mà trong môi trường phát triển (VS Code, Xcode, Terminal, JetBrains, Meta Muse).
 
 > [!IMPORTANT]
-> ### 🇯🇵 Trải nghiệm song ngữ Việt – Nhật mượt mà: Không độ trễ, không cần tắt bộ gõ!
-> * **Nỗi đau phổ biến**: Trên macOS và Windows, các bộ gõ tiếng Việt thông thường (EVKey, OpenKey, Unikey, GoTiengViet...) đều bắt phím ngầm và gửi phím Backspace giả lập, làm vỡ bộ đệm tổ hợp Romaji ➔ Hiragana/Kanji của IME tiếng Nhật (Kotoeri, Google Japanese Input, Microsoft Japanese IME). Người dùng luôn phải nhớ chuyển bộ gõ sang Tiếng Anh (E) hoặc tắt hẳn trước khi gõ tiếng Nhật.
-> * **Giải pháp đột phá của Gox**: Gox tự động theo dõi trạng thái bộ gõ của hệ điều hành. Khi bạn chuyển sang Tiếng Nhật, Gox lập tức kích hoạt cơ chế **Bypass nguyên bản** — phím bấm được chuyển thẳng đến IME tiếng Nhật. **Bạn hoàn toàn không cần tắt Gox, không cần chuyển về Tiếng Anh (E), cứ chuyển đổi ngôn ngữ là gõ được ngay.**
+> ### 🇯🇵 Đặc quyền Bàn phím Nhật (JIS Layout) & Phím `かな` / `英数`: Không trôi chữ, không cần tắt bộ gõ!
+> * **Nỗi đau phổ biến trên MacBook xách tay Nhật & công ty cấp**:
+>   1. **Trôi chữ thô khó chịu**: Khi vừa bấm phím `かな` (104) hoặc `英数` (102) để chuyển chế độ rồi quay lại gõ tiếng Việt, các bộ gõ cũ bị lỗi nhét mã phím vào buffer gây trôi chữ thô dị dạng (`khacsh`, `seeps`, `neeus`, `vaayj`).
+>   2. **Vỡ bộ đệm tổ hợp tiếng Nhật**: Các bộ gõ tiếng Việt thông thường gửi phím Backspace giả lập làm vỡ cụm Romaji ➔ Hiragana/Kanji (`とうきょう`). Người dùng luôn phải nhớ tắt bộ gõ thủ công mỗi khi gõ tiếng Nhật.
+>   3. **Lỗi gõ phím `@` thành chữ `ơ`**: Do layout JIS đặt `@` ở keycode 33 (vốn là phím `[` trên bàn phím US).
+> * **Giải pháp đột phá của Gox**:
+>   - Gox tự động bắt phím `かな` và `英数` trước bộ lọc hệ thống, tự động làm sạch buffer từ ngay tức khắc: **Chấm dứt hoàn toàn hiện tượng trôi chữ thô**.
+>   - **Tự động chuyển đổi thông minh**: Bấm `かな` ➔ Gox tự động **Bypass 100%** nhả phím nguyên bản cho IME tiếng Nhật (Kotoeri, Google Japanese Input); Bấm `英数` ➔ Gox tự động **kích hoạt lại Tiếng Việt** ngay lập tức. **Tuyệt đối không cần tắt Gox thủ công, không cần đụng chuột lên Menu Bar.**
+>   - Nhận diện phần cứng JIS qua API native macOS, giữ nguyên phím `@` khi gõ email và ánh xạ chuẩn xác `[` / `]` sang `ơ` / `ư`.
 
 > [!TIP]
 > ### ✍️ Loại bỏ lỗi gạch chân khó chịu ở bộ gõ mặc định: Gõ sai không lo phải xóa cả từ!
-> * **Nỗi đau ở bộ gõ mặc định**: Trên macOS, bộ gõ tiếng Việt mặc định của Apple sử dụng cơ chế gạch chân (preedit inline buffer). Khi đang gõ, chữ sẽ bị gạch chân bên dưới; ngay khi bạn bấm dấu cách hoặc di chuyển con trỏ, gạch chân biến mất và từ bị chốt cứng (commit). **Hậu quả là nếu lỡ gõ sai, bạn không thể bấm phím sửa dấu hay sửa từng ký tự lẻ mà bắt buộc phải xóa toàn bộ cả từ để gõ lại từ đầu**, vô cùng ức chế và làm gián đoạn dòng gõ phím.
-> * **Trải nghiệm tự do cùng Gox**: Gox triệt tiêu hoàn toàn gạch chân phiền toái. Bạn có thể thoải mái sửa phím, lùi từ, bỏ dấu tự do mà không bao giờ phải gõ lại nguyên từ. Đồng thời loại bỏ triệt để hiện tượng kẹt phím, nhảy chữ, đúp từ trên thanh địa chỉ trình duyệt (Chrome, Safari Omnibox) và các trình biên soạn mã nguồn (VS Code, Xcode).
+> * **Nỗi đau ở bộ gõ mặc định**: Trên macOS, bộ gõ tiếng Việt mặc định của Apple sử dụng cơ chế gạch chân (preedit inline buffer). Khi gõ sai, bạn không thể bấm phím sửa dấu hay sửa từng ký tự lẻ mà bắt buộc phải xóa toàn bộ cả từ để gõ lại từ đầu, vô cùng ức chế và làm gián đoạn dòng suy nghĩ.
+> * **Trải nghiệm tự do cùng Gox**: Gox triệt tiêu hoàn toàn gạch chân phiền toái. Bạn có thể thoải mái sửa phím, lùi từ, bỏ dấu tự do mà không bao giờ phải gõ lại nguyên từ. Đồng thời loại bỏ triệt để hiện tượng kẹt phím, nhảy chữ, đúp từ trên thanh địa chỉ trình duyệt (Chrome, Safari Omnibox), các IDE (VS Code, Xcode) và ứng dụng ghi chú Meta Muse.
+
+> [!WARNING]
+> ### 🚨 Cảnh báo trực quan khóa phím Secure Input (v1.0.11): Không còn cảnh tưởng bộ gõ bị đơ!
+> * **Hiện tượng**: Thỉnh thoảng đang gõ tiếng Việt bình thường thì bộ gõ đột ngột mất tác dụng, chỉ gõ được chữ tiếng Anh không dấu. Nguyên nhân thực chất là do một tab trình duyệt ẩn hoặc ứng dụng (Chrome, Safari, 1Password...) đang kích hoạt ô mật khẩu và khóa bàn phím toàn hệ thống (Secure Event Input).
+> * **Tính năng độc quyền của Gox**: Truy vấn trực tiếp Kernel `IORegistry` (`IOConsoleUsers`), nhận diện chuẩn xác ứng dụng đang khóa bàn phím. Logo chữ **`V`** trên Menu Bar sẽ **nhấp nháy đỏ 3 lần và chuyển sang màu ĐỎ rực** cảnh báo. Người dùng chỉ cần **1-Click vào dòng thông báo trên Menu Bar** để đưa ngay ứng dụng khóa phím lên trước màn hình để thoát ô mật khẩu nhanh chóng!
 
 > [!NOTE]
-> ### 🛡️ Mã nguồn mở 100% & Zero-Telemetry: Không lo Keylogger như các phần mềm nguồn đóng!
-> * **Mối lo từ bộ gõ nguồn đóng**: Bộ gõ là phần mềm nhạy cảm nhất vì nhận trọn vẹn mọi ký tự bạn gõ trên bàn phím — từ mật khẩu tài khoản, mã PIN ngân hàng, tin nhắn riêng tư đến mã nguồn bảo mật của công ty. Các bộ gõ nguồn đóng tiềm ẩn rủi ro bị cài cắm keylogger ngầm hoặc âm thầm thu thập hành vi người dùng gửi về máy chủ mà không ai kiểm chứng được.
-> * **Cam kết minh bạch tuyệt đối của Gox**: Gox là phần mềm **mã nguồn mở 100% (GPLv3)**, hoạt động **hoàn toàn offline** và cam kết **Zero-Telemetry (không thu thập bất kỳ dữ liệu nào)**. Toàn bộ mã nguồn được công khai trên GitHub, mang lại sự an tâm tuyệt đối cho người dùng cá nhân lẫn các kỹ sư làm việc trong môi trường doanh nghiệp khắt khe về an toàn thông tin.
+> ### 🛡️ Mã nguồn mở 100%, Zero-Telemetry & Đã được Apple công chứng (Apple Notarized)
+> * **Mối lo từ bộ gõ nguồn đóng**: Bộ gõ là phần mềm nhạy cảm nhất vì nhận trọn vẹn mọi phím bấm — mật khẩu tài khoản, mã PIN ngân hàng, tin nhắn riêng tư và source code công ty. Các bộ gõ nguồn đóng tiềm ẩn rủi ro cài cắm keylogger gửi dữ liệu về máy chủ.
+> * **Cam kết minh bạch tuyệt đối của Gox**: Gox là phần mềm **mã nguồn mở 100% (GPLv3)**, hoạt động **hoàn toàn offline** và cam kết **Zero-Telemetry**. Binary `Gox.app` và gói cài đặt `Gox.dmg` đã được **ký số Apple Developer ID và công chứng chính thức (Apple Notarized)**, kèm tính năng **Tự động Cập nhật 1-Click (In-App Auto-Update)** trực tiếp trên Menu Bar mà không bao giờ làm mất quyền Trợ năng (Accessibility).
 
 ---
 
 ### Điểm nổi bật:
-* 🇯🇵 **Dùng song song Tiếng Nhật (Không cần tắt Gox)**: Thoải mái gõ tiếng Nhật (Kotoeri, Google Japanese Input, Microsoft IME...) song song với tiếng Việt 24/7. Tự động nhận diện và bypass phím bấm nguyên bản, không làm vỡ bộ đệm tổ hợp Romaji/Hiragana/Kanji.
-* ✍️ **Xóa bỏ lỗi gạch chân khó chịu**: Khắc phục triệt để nhược điểm của bộ gõ mặc định. Lỡ gõ sai có thể sửa ngay tại chỗ, không bao giờ phải xóa cả từ để gõ lại.
-* 🛡️ **Mã nguồn mở & Không lo Keylogger**: 100% mã nguồn mở minh bạch, hoàn toàn offline, zero telemetry. An toàn tuyệt đối cho mật khẩu và dữ liệu công việc so với các phần mềm nguồn đóng.
-* 💖 **Miễn phí trọn đời & Luôn cập nhật**: Dự án phi lợi nhuận vì cộng đồng, tích hợp tính năng cập nhật 1-click tức thì (In-App Auto-Update), liên tục bảo trì và phát triển bền vững.
-* ⌨️ **Tương thích hoàn hảo Bàn phím chuẩn Nhật (JIS Keyboard)**: Chuyển đổi mượt mà với các phím đặc thù trên bàn phím JIS (`かな` / `英数`) cũng như bàn phím US/quốc tế (`Ctrl + Space`, `Globe/Fn`).
-* 💻 **Hỗ trợ Đa nền tảng (Cross-Platform)**: Trải nghiệm nhất quán trên cả **macOS** và **Windows**, cùng lộ trình tích hợp sâu cho **Linux (Ubuntu/Debian)**.
-* 🚀 **Siêu nhẹ & Hiệu năng cao**: Hot-path xử lý phím bấm được tối ưu triệt để bằng C++, không gây lag con trỏ hay đơ bàn phím.
-* 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt/Tiếng Anh theo từng ứng dụng (Safari/Browser ↔ Terminal/IDE).
-* 🎯 **Khắc phục lỗi gõ trên Browser**: Tích hợp cơ chế sửa lỗi đúp từ trên Omnibox trình duyệt Chromium, Safari, Edge.
-
----
-
-## Tình trạng hỗ trợ Nền tảng (Platform Support)
-
-| Nền tảng | Trạng thái | Điểm nhấn kỹ thuật |
-| :--- | :---: | :--- |
-| 🍏 **macOS** | **Sẵn sàng (Stable)** | Chạy native Apple Silicon (M1/M2/M3/M4) & Intel. Tự động bypass Kotoeri/Google Japanese Input qua TIS notification. |
-| 🪟 **Windows** | **Sẵn sàng (Stable)** | Tương thích Windows 10/11 x64. Nhận diện trạng thái IME qua `ImmGetDefaultIMEWnd` + `IMC_GETOPENSTATUS`. Chạy quyền Admin gõ mượt trong game và app đồ họa. |
-| 🐧 **Linux (Ubuntu / Debian)** | **Lộ trình (Roadmap)** | Đang phát triển tích hợp IBus/Fcitx5 và standalone daemon dựa trên lõi C++ Engine. |
+* ⌨️ **Tương thích hoàn hảo Bàn phím chuẩn Nhật (JIS Layout)**: Hỗ trợ mượt mà phím `かな` / `英数`, gõ chuẩn phím `@`, diệt tận gốc lỗi trôi chữ thô `khacsh`, `vaayj`.
+* 🇯🇵 **Dùng song song Tiếng Nhật (Không cần tắt Gox)**: Tự động nhận diện và bypass phím bấm nguyên bản khi gõ Kotoeri hay Google Japanese Input, không làm vỡ bộ đệm Romaji ➔ Kanji.
+* 🚨 **Cảnh báo đỏ Secure Input & 1-Click xử lý**: Menu Bar nháy đỏ cảnh báo khi bị ô mật khẩu khóa phím, click để nhảy ngay đến app thủ phạm.
+* ✍️ **Xóa bỏ lỗi gạch chân khó chịu**: Không bao giờ phải xóa cả từ để gõ lại dấu; triệt tiêu lỗi đúp từ trên thanh địa chỉ Chrome, Safari và Meta Muse.
+* 🛡️ **Mã nguồn mở GPLv3 & Apple Notarized**: Không lo Keylogger, an toàn tuyệt đối cho doanh nghiệp, mở trực tiếp mượt mà không bị Gatekeeper chặn.
+* 💖 **Tự động Cập nhật 1-Click (In-App Update)**: Kiểm tra và nâng cấp phiên bản mới chỉ với 1 cú click ngay trên Menu Bar.
+* 🚀 **Siêu nhẹ & Hiệu năng cao**: Viết bằng Objective-C/C++ tối ưu ở tầng `CGEventTap`, tự phục hồi khi hệ thống lag timeout, tiêu thụ 0% CPU lúc nghỉ.
+* 🔄 **Chuyển chế độ thông minh**: Tự ghi nhớ chế độ Tiếng Việt / Tiếng Anh cho từng phần mềm (Safari ↔ Terminal/IDE).
 
 ---
 
 ## 🇯🇵 日本語での概要 (About Gox in Japanese)
 
-### Gox — ベトナム語・日本語入力のシームレスな共存を実現する次世代入力アプリ
+### Gox — macOS専用・ベトナム語と日本語入力のシームレスな共存を実現する次世代入力アプリ
 
-**Gox** は、macOS および Windows に対応したオープンソースのベトナム語入力アプリです。特に日越のバイリンガル環境で活躍するエンジニア、BrSE、通訳・翻訳者、留学生のために設計されています。
+**Gox** は、macOS（Apple Silicon M1〜M4 & Intel）にネイティブ対応したオープンソースのベトナム語入力アプリです。特に日越のバイリンガル環境で活躍するエンジニア、BrSE、通訳・翻訳者、留学生、および**JIS配列（日本語キーボード）のMacBook**をご利用の方のために極限まで最適化されています。
 
 #### 主な特徴:
-1. **日本語IMEとの完全な共存（遅延ゼロ・バッファ破損なし）**:
-   * 従来のベトナム語入力ソフトでは、日本語入力時にインライン変換バッファ（ローマ字 ➔ ひらがな/漢字）が破壊される問題がありました。
-   * Gox はOSの入力ソース状態を自動検出し、日本語（ことえり、Google日本語入力、Microsoft IME）が選択された瞬間に**キーストロークをそのまま通過（Bypass）**させます。ベトナム語入力をオフにする必要は一切ありません。
+1. **JIS配列キーボード（「かな」「英数」キー）完全対応**:
+   * 「かな」(104)・「英数」(102)キーを押した直後の入力バッファ破損（`khacsh`, `vaayj` のような未変換ゴミ文字の発生）を根本から解消。
+   * 「かな」キーで日本語IMEへ100%自動パススルー、「英数」キーで即座にベトナム語入力を復帰。Goxを手動でオン/オフする必要はありません。
+   * 日本語配列特有の「@」キー誤変換（「ơ」になる問題）を完全修正。
 2. **煩わしい「下線（インライン変換）」を完全排除**:
-   * macOS標準のベトナム語入力のように下線で入力中テキストが固定されることがなく、入力ミス時にも単語全体を消去せずその場で柔軟に修正可能です。
-3. **100% オープンソース＆キーロガーの心配ゼロ（Zero-Telemetry）**:
-   * クローズドソース（ソース非公開）の入力ソフトとは異なり、Goxはソースコードを完全公開（GPLv3）し、完全オフラインで動作します。キーストロークの収集や外部送信は一切行わないため、企業の機密情報やパスワードの入力も極めて安全です。
-4. **JIS配列キーボード完全対応**:
-   * 日本語キーボード（JIS）特有の「かな」「英数」キーや、macOSの「Caps Lock / 地球儀キー」での切り替えにスムーズに対応。
-5. **超軽量＆高パフォーマンス＆継続的なアップデート**:
-   * C++で極限まで最適化されたコアエンジンにより、遅延ゼロの高速タイピングを実現。メニューバーからの1クリック自動更新に対応し、常に最新の状態で安心してご利用いただけます。
+   * macOS標準のベトナム語入力のような下線固定がなく、入力ミス時にも単語全体を消去せずその場で柔軟に修正可能です。Chrome/SafariのアドレスバーやMeta Museでの二重入力バグも解消。
+3. **セキュア入力（Secure Input）の視覚的赤色警告（v1.0.11新機能）**:
+   * パスワード入力欄等によりキー入力がロックされた場合、メニューバーの「V」アイコンが赤く3回点滅し、鮮やかな赤色に変化。メニューをクリックするだけでロック元のアプリを最前面に呼び出して素早く解除できます。
+4. **100% オープンソース＆Apple公証済み（Zero-Telemetry）**:
+   * 完全オープンソース（GPLv3）かつ完全オフライン動作。キーロガーの危険性が一切ありません。
+   * Apple Developer IDによる署名と公証（Apple Notarized）を取得済み。Gatekeeperにブロックされることなく安全に起動でき、メニューバーからの1クリック自動更新に対応しています。
 
 ---
 
@@ -103,40 +104,34 @@
 
 ---
 
-## Cài đặt & Sử dụng
+## Cài đặt & Sử dụng cho macOS
 
-### 1. Dành cho macOS
-1. Tải file cài đặt `.dmg` bản mới nhất: [Tải trực tiếp Gox.dmg](https://github.com/tuyennq1001/gox/releases/latest/download/Gox.dmg) (hoặc xem tại [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest)).
+1. Tải file cài đặt `.dmg` bản mới nhất: **[Tải trực tiếp Gox.dmg](https://github.com/tuyennq1001/gox/releases/latest/download/Gox.dmg)** (hoặc xem tại [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest)).
 2. Mở file `.dmg` và kéo biểu tượng **`Gox.app`** vào thư mục **`Applications`**.
-3. **Mở ứng dụng lần đầu (Bỏ qua cảnh báo Gatekeeper)**:
-   - Do Gox là phần mềm nguồn mở miễn phí, macOS sẽ yêu cầu xác nhận khi mở lần đầu.
-   - Nhấp **chuột phải (hoặc giữ phím Control + click)** vào `Gox.app` trong thư mục `Applications` ➔ Chọn **Mở (Open)** ➔ Chọn tiếp **Mở (Open)** ở hộp thoại xác nhận.
-4. **Cấp quyền Trợ năng (Accessibility)**:
-   - Vào **Cài đặt hệ thống (System Settings)** ➔ **Quyền riêng tư & Bảo mật (Privacy & Security)** ➔ **Trợ năng (Accessibility)** ➔ Bật công tắc cho **`Gox`**.
+3. **Cấp quyền Trợ năng (Accessibility)**:
+   - Mở Gox lần đầu, hệ thống sẽ hiển thị yêu cầu cấp quyền Trợ năng.
+   - Nhấn **Mở Cài đặt hệ thống (Open System Settings)** ➔ **Quyền riêng tư & Bảo mật (Privacy & Security)** ➔ **Trợ năng (Accessibility)** ➔ Bật công tắc cho **`Gox`**.
+   - Bộ gõ sẽ tự động kích hoạt ngay lập tức mà không cần khởi động lại.
 
 > [!TIP]
-> **Dành cho người dùng tiếng Nhật trên macOS**:
-> Bạn có thể thoải mái chuyển đổi giữa Tiếng Nhật và Tiếng Việt bằng phím tắt hệ thống thông thường (`Control + Space`, phím `Globe/Fn` hoặc phím `かな/英数` trên bàn phím JIS). Gox tự động phát hiện và bypass hoàn toàn — **tuyệt đối không cần phải tắt Gox hay chuyển về Tiếng Anh thủ công**.
-
-### 2. Dành cho Windows
-1. Tải file `.zip` bản mới nhất từ [GitHub Releases](https://github.com/tuyennq1001/gox/releases/latest).
-2. Giải nén vào thư mục bất kỳ và chạy file **`Gox.exe`**.
-3. Khuyến nghị chạy dưới quyền **Administrator** (có sẵn tùy chọn trong phần Cài đặt) để gõ tốt trong game và các phần mềm đồ họa (Photoshop, CAD...).
+> **Phím tắt chuyển đổi chế độ gõ**:
+> - **Chuyển giữa Tiếng Việt và Tiếng Anh trong Gox**: Mặc định là **`⌥Z`** (Option + Z), có thể tùy chỉnh thành `⌃Space`, `⌥⇧Z` trong Bảng điều khiển.
+> - **Khi gõ Tiếng Nhật**: Bạn chỉ cần bấm phím **`かな`** / **`英数`** trên bàn phím JIS hoặc phím chuyển ngôn ngữ hệ thống macOS thông thường (`⌃Space` / `Globe`). Gox tự động nhận diện và bypass — **tuyệt đối không cần tắt Gox thủ công**.
 
 ---
 
 ## Tự Build từ Mã nguồn
 
-### macOS:
-Yêu cầu macOS 10.14 trở lên và Xcode 11 trở lên:
+Yêu cầu: macOS 12.0 Monterey trở lên và Xcode 13 trở lên.
 ```bash
 git clone https://github.com/tuyennq1001/gox.git
 cd gox
-xcodebuild -project Sources/Gox/macOS/Gox.xcodeproj -scheme Gox build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+xcodebuild -project Sources/Gox/macOS/Gox.xcodeproj -scheme Gox -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO MACOSX_DEPLOYMENT_TARGET=12.0 -derivedDataPath build/DerivedData
 ```
-
-### Windows:
-Mở giải pháp `Sources/Gox/win32/OpenKey/OpenKey.sln` bằng Visual Studio 2017/2019/2022 và chọn cấu hình `Release | x64` để biên dịch.
+File ứng dụng `Gox.app` sẽ được tạo tại `build/DerivedData/Build/Products/Release/Gox.app`. Để tự đóng gói file cài đặt DMG chuẩn giao diện kéo thả, chạy:
+```bash
+./scripts/package_dmg.sh
+```
 
 ---
 

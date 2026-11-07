@@ -137,52 +137,6 @@ Sửa vài lỗi nho nhỏ khác.
 - Hỗ trợ cho macOS bản cũ.
 
 ##### Version 1.0.17: (31/07/2019)
-- Add Simple Telex mode.
-- Black/White icon on menu bar.
-- Space and back key improved.
-- Modern orthography.
-- Custom switch key.
-- Quick telex (cc=ch, gg=gi, kk=kh, nn=ng, qq=qu, pp=ph, tt=th).
-- Support TextWrangler.
-
-##### Version 1.0.14: (09/04/2019)
-- Add case "uýt".
-- Improve typing English in Vietnamese mode.
-
-##### Version 1.0.11: (27/02/2019)
-- Add case "chú thòong", "gòong".
-
-##### Version 1.0.10: (26/02/2019)
-- Fix case "duocd".
-
-##### Version 1.0.9: (22/02/2019)
-- Fix incorrect word when switch language without pressing Space key.
-
-##### Version 1.0.8: (19/02/2019)
-- Switch key: Control + Command + Space  --> Control + Z
-
-##### Version 1.0.7: (15/02/2019)
-- Fix case "duongd".
-- Fix end consonant "t".
-
-##### Version 1.0.6: (15/02/2019)
-- Fix case "quatw".
-
-##### Version 1.0.5: (13/02/2019)
-- Spelling enhanced.
-- Correct 1x menu icon.
-
-##### Version 1.0.3: (11/02/2019)
-- Fix auto correct on Chrome.
-
-##### Version 1.0: (11/02/2019)
-- First release.
-
-
-
-# OpenKey lịch sử
-
-##### Version 1.0.17: (31/07/2019)
 - Thêm chế độ Simple Telex.
 - Icon trắng đen trên menu bar.
 - Lỡ bấm phím Space, xoá space vẫn có thể bỏ dấu.
@@ -190,6 +144,10 @@ Sửa vài lỗi nho nhỏ khác.
 - Tuỳ chọn phím chuyển.
 - Gõ nhanh (cc=ch, gg=gi, kk=kh, nn=ng, qq=qu, pp=ph, tt=th).
 - Hỗ trợ TextWrangler.
+
+##### Version 1.0.14: (09/04/2019)
+- Thêm trường hợp "uýt".
+- Cải thiện gõ tiếng Anh khi ở chế độ gõ tiếng Việt.
 
 ##### Version 1.0.11: (27/02/2019)
 - Thêm trường hợp "chú thòong", "gòong".
@@ -218,4 +176,4 @@ Sửa vài lỗi nho nhỏ khác.
 - Sửa lỗi thanh địa chỉ trên Chrome.
 
 ##### Version 1.0: (11/02/2019)
-- Phát hành lần đầu.
+- Phát hành lần đầu OpenKey.
