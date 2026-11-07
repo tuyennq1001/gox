@@ -2,8 +2,8 @@
 Bạn có thể tải mã nguồn về tự build Gox cho máy mình.
 
 Yêu cầu:
-- macOS 10.14 Mojave trở lên.
-- Xcode 11 trở lên.
+- macOS 12.0 Monterey trở lên (hỗ trợ cả Apple Silicon & Intel).
+- Xcode 13 trở lên.
 - (Tùy chọn) `create-dmg` để đóng gói bộ cài DMG: `brew install create-dmg`.
 
 ### Build bằng dòng lệnh (CLI):
